@@ -20,9 +20,18 @@ namespace Proyecto_SW_II.Controllers
         }
 
         // GET: Usuarios
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Usuarios.ToListAsync());
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var users = _context.Usuarios.Where(s => s.Nombre.Contains(searchString));
+                return View(await users.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Usuarios.ToListAsync());
+            }
+            
         }
 
         // GET: Usuarios/Details/5
