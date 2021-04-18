@@ -4,17 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Lista de usuarios en la plataforma</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Registrar a un usuario</a>
+    <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Usuarios" asp-action="Index" method="get">
-    <p>
-        Title: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
 <table class="table">
     <thead>
         <tr>
@@ -42,11 +36,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Direccion)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mirol.TipoUsuario)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Dni)
@@ -71,6 +69,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                Oculto
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

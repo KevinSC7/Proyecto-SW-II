@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,19 @@ namespace Proyecto_SW_II.Models
         [Display(Name = "Contraseña")]
         public string Contraseña { get; set; }
 
-        public bool Estado { get; set; }
+        public bool Estado = true;
+        public Boolean _Estado
+        {
+            get
+            {
+                return Estado;
+            }
+            set
+            {
+                Estado = value;
+            }
+        }
+        
+        public Usuario Miusuario { get; set; }
     }
 }

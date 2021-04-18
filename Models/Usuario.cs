@@ -43,5 +43,7 @@ namespace Proyecto_SW_II.Models
 
         [StringLength(500)]
         public string Direccion { get; set; }
+        
+        public Rol Mirol { get; set; }
     }
 }

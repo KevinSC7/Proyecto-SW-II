@@ -10,22 +10,22 @@ using Proyecto_SW_II.Models;
 
 namespace Proyecto_SW_II.Controllers
 {
-    public class UsuariosController : Controller
+    public class CuentasController : Controller
     {
         private readonly AplicationDBContext _context;
 
-        public UsuariosController(AplicationDBContext context)
+        public CuentasController(AplicationDBContext context)
         {
             _context = context;
         }
 
-        // GET: Usuarios
+        // GET: Cuentas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            return View(await _context.Cuentas.ToListAsync());
         }
 
-        // GET: Usuarios/Details/5
+        // GET: Cuentas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
+            var cuenta = await _context.Cuentas
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            if (cuenta == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(cuenta);
         }
 
-        // GET: Usuarios/Create
+        // GET: Cuentas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: Cuentas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Dni,Nombre,Apellido1,Apellido2,FechaNacimiento,Edad,Telefono,Direccion")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
+                _context.Add(cuenta);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(cuenta);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: Cuentas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
+            var cuenta = await _context.Cuentas.FindAsync(id);
+            if (cuenta == null)
             {
                 return NotFound();
             }
-            return View(usuario);
+            return View(cuenta);
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: Cuentas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Dni,Nombre,Apellido1,Apellido2,FechaNacimiento,Edad,Telefono,Direccion")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
         {
-            if (id != usuario.Id)
+            if (id != cuenta.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Proyecto_SW_II.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
+                    _context.Update(cuenta);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.Id))
+                    if (!CuentaExists(cuenta.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Proyecto_SW_II.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(cuenta);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: Cuentas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
+            var cuenta = await _context.Cuentas
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            if (cuenta == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(cuenta);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: Cuentas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            _context.Usuarios.Remove(usuario);
+            var cuenta = await _context.Cuentas.FindAsync(id);
+            _context.Cuentas.Remove(cuenta);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(int id)
+        private bool CuentaExists(int id)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            return _context.Cuentas.Any(e => e.Id == id);
         }
     }
 }

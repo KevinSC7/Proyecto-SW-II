@@ -19,7 +19,20 @@ namespace Proyecto_SW_II.Models
                 {
                     return;   // DB has been seeded
                 }
-
+                context.Roles.AddRange(
+                    new Rol
+                    {
+                        Id = 1,
+                        TipoUsuario='A',
+                        Descripcion="Administrador: administra categorias, peliculas, cuentas cambio de rol y compañias"
+                    },
+                    new Rol
+                    {
+                        Id = 2,
+                        TipoUsuario = 'C',
+                        Descripcion = "Cliente: administra sus datos, explora y alquila peliculas y administra sus peliculas alquiladas"
+                    }
+                    );
                 /*context.Movie.AddRange(
                     new Movie
                     {
