@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Logging;
 using Proyecto_SW_II.Models;
 using Proyecto_SW_II.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace Proyecto_SW_II.Controllers
 {
@@ -19,14 +21,10 @@ namespace Proyecto_SW_II.Controllers
         {
             _logger = logger;
             _context = context;
+            
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }
@@ -43,6 +41,7 @@ namespace Proyecto_SW_II.Controllers
             var r=await _context.Roles.FindAsync(2);
             
             usuario.Mirol = r;
+            cuenta.Miusuario = usuario;//NUEVA
             int años=(int)DateTime.Now.Subtract(usuario.FechaNacimiento).TotalDays / 365;
             if (años >= 18)
             {
@@ -50,6 +49,8 @@ namespace Proyecto_SW_II.Controllers
                 _context.Add(usuario);
                 _context.Add(cuenta);
                 await _context.SaveChangesAsync();
+                HttpContext.Session.SetString("NombreSession", cuenta.Nombre);
+                HttpContext.Session.SetInt32("ID", cuenta.Id);
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -61,6 +62,36 @@ namespace Proyecto_SW_II.Controllers
         }
 
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Cuenta cuenta)
+        {
+            var miCuenta = await _context.Cuentas.FindAsync(cuenta);
+
+            if (miCuenta == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+            else
+            {
+                HttpContext.Session.SetString("NombreSession", cuenta.Nombre);
+                HttpContext.Session.SetInt32("ID", cuenta.Id);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        public IActionResult logout()
+        {
+            HttpContext.Session.Remove("NombreSession");
+            HttpContext.Session.Remove("ID");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Privacy()
         {
             return View();
         }

@@ -22,7 +22,7 @@ namespace Proyecto_SW_II.Controllers
         // GET: Cuentas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cuentas.ToListAsync());
+            return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
         }
 
         // GET: Cuentas/Details/5

@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Proyecto ingenieria de software II</title>
+    <title>@ViewData["Title"] - Videoclub</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -22,23 +24,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                     </ul>
                 </div>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <ul class="navbar-nav flex-grow-1" >
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Registro">Registrarse</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Login">Iniciar sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Usuarios" asp-action="Create">Redireccion a registro</a>
-                    </li>
+                <ul class="navbar-nav flex-grow-1">
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="misDatos">Hola @HttpContextAccessor.HttpContext.Session.GetString("NombreSession")</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Registro">Registrarse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Login">Iniciar sesión</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>

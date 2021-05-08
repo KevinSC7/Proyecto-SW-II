@@ -9,6 +9,6 @@ namespace Proyecto_SW_II.Models
     {
         public Usuario usuario { get; set; }
         public Cuenta cuenta { get; set; }
-
+        public Rol rol { get; set; }
     }
 }

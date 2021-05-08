@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Proyecto_SW_II.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Proyecto_SW_II
 {
@@ -26,10 +27,12 @@ namespace Proyecto_SW_II
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<AplicationDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("AplicationDBContext")));
-
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);  
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +50,7 @@ namespace Proyecto_SW_II
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
