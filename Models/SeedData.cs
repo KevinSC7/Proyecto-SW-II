@@ -76,7 +76,6 @@ namespace Proyecto_SW_II.Models
                                 Apellido2 = "",
                                 Direccion = "",
                                 Dni = "",
-                                Edad = 20,
                                 FechaNacimiento = DateTime.Now,
                                 Telefono = "987213696",
                                 Mirol = context.Roles.Find(1)

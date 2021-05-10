@@ -25,6 +25,11 @@ namespace Proyecto_SW_II.Controllers
             return View(await _context.Usuarios.Include(r => r.Mirol).ToListAsync());
         }
 
+        public async Task<Usuario> getUsuarioById(int? id)
+        {
+            return await _context.Usuarios.Include(u => u.Mirol).FirstAsync();
+        }
+
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,7 +59,7 @@ namespace Proyecto_SW_II.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Dni,Nombre,Apellido1,Apellido2,FechaNacimiento,Edad,Telefono,Direccion")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Id,Dni,Nombre,Apellido1,Apellido2,FechaNacimiento,Telefono,Direccion")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +91,7 @@ namespace Proyecto_SW_II.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Dni,Nombre,Apellido1,Apellido2,FechaNacimiento,Edad,Telefono,Direccion")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Dni,Nombre,Apellido1,Apellido2,FechaNacimiento,Telefono,Direccion")] Usuario usuario)
         {
             if (id != usuario.Id)
             {

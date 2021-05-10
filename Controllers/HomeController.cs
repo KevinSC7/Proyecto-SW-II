@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Proyecto_SW_II.Models;
 using Proyecto_SW_II.Data;
 using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 
 namespace Proyecto_SW_II.Controllers
 {
@@ -20,8 +21,7 @@ namespace Proyecto_SW_II.Controllers
         public HomeController(ILogger<HomeController> logger, AplicationDBContext context)
         {
             _logger = logger;
-            _context = context;
-            
+            _context = context; 
         }
 
         public IActionResult Index()
@@ -38,14 +38,23 @@ namespace Proyecto_SW_II.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registro(Usuario usuario, Cuenta cuenta)
         {
+            IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
+            ModelState.Clear();
+
+            if (TryValidateModel(datos))
+            {
+                return RedirectToAction(nameof(Privacy));
+            }
+            
+            return View(datos);
+            if (_context.Cuentas.Any(c => c.Nombre == cuenta.Nombre)) return View(datos);
             var r=await _context.Roles.FindAsync(2);
             
             usuario.Mirol = r;
-            cuenta.Miusuario = usuario;//NUEVA
+            cuenta.Miusuario = usuario;
             int años=(int)DateTime.Now.Subtract(usuario.FechaNacimiento).TotalDays / 365;
             if (años >= 18)
             {
-                usuario.Edad = años;
                 _context.Add(usuario);
                 _context.Add(cuenta);
                 await _context.SaveChangesAsync();
@@ -56,7 +65,7 @@ namespace Proyecto_SW_II.Controllers
             else
             {
                 //error tu no tienes 18
-                return RedirectToAction(nameof(Registro));
+                return View(datos);
             }
             
         }
@@ -68,9 +77,9 @@ namespace Proyecto_SW_II.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Cuenta cuenta)
+        public IActionResult Login(string Nombre, string Contraseña)
         {
-            var miCuenta = await _context.Cuentas.FindAsync(cuenta);
+            var miCuenta =_context.Cuentas.FirstOrDefault(n => n.Nombre == Nombre && n.Contraseña == Contraseña);
 
             if (miCuenta == null)
             {
@@ -78,17 +87,35 @@ namespace Proyecto_SW_II.Controllers
             }
             else
             {
-                HttpContext.Session.SetString("NombreSession", cuenta.Nombre);
-                HttpContext.Session.SetInt32("ID", cuenta.Id);
+                HttpContext.Session.SetString("NombreSession", Nombre);
+                HttpContext.Session.SetInt32("ID", miCuenta.Id);
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        public IActionResult logout()
+        public IActionResult Logout()
         {
             HttpContext.Session.Remove("NombreSession");
             HttpContext.Session.Remove("ID");
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> MisDatos()
+        {
+            CuentasController cc = new CuentasController(_context);
+            var cuenta = await cc.getCuentaById(HttpContext.Session.GetInt32("ID"));
+            
+            if (cuenta == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var user = await _context.Usuarios.FindAsync(cuenta.Miusuario.Id);
+            if(user == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(user, cuenta, null);
+            return View(datos);
         }
 
         public IActionResult Privacy()

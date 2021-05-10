@@ -10,8 +10,8 @@ using Proyecto_SW_II.Data;
 namespace Proyecto_SW_II.Migrations
 {
     [DbContext(typeof(AplicationDBContext))]
-    [Migration("20210415120418_foreignKeyCuentaUser")]
-    partial class foreignKeyCuentaUser
+    [Migration("20210510120858_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -184,9 +184,6 @@ namespace Proyecto_SW_II.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");

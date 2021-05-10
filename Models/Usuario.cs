@@ -33,9 +33,6 @@ namespace Proyecto_SW_II.Models
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
 
-        [Range(18, 100)]
-        public int Edad { get; set; }
-
         [Required]
         [Phone]
         [Display(Name = "Número de teléfono")]

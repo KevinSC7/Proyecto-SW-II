@@ -183,9 +183,6 @@ namespace Proyecto_SW_II.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
 

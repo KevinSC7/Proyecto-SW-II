@@ -25,6 +25,11 @@ namespace Proyecto_SW_II.Controllers
             return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
         }
 
+        public async Task<Cuenta> getCuentaById(int? id)
+        {
+            return await _context.Cuentas.Include(u => u.Miusuario).FirstAsync();
+        }
+
         // GET: Cuentas/Details/5
         public async Task<IActionResult> Details(int? id)
         {

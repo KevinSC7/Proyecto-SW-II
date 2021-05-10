@@ -32,7 +32,7 @@
                     @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="misDatos">Hola @HttpContextAccessor.HttpContext.Session.GetString("NombreSession")</a>
+                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="MisDatos">Hola @HttpContextAccessor.HttpContext.Session.GetString("NombreSession")</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>

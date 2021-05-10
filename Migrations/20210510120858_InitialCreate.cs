@@ -13,7 +13,7 @@ namespace Proyecto_SW_II.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Pago = table.Column<int>(type: "int", nullable: false),
+                    Pago = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FechaComienzo = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -46,21 +46,6 @@ namespace Proyecto_SW_II.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Compañias", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cuentas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contraseña = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Estado = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cuentas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,14 +101,52 @@ namespace Proyecto_SW_II.Migrations
                     Apellido1 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Apellido2 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Edad = table.Column<int>(type: "int", nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Direccion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    Direccion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    MirolId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Roles_MirolId",
+                        column: x => x.MirolId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Cuentas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contraseña = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    _Estado = table.Column<bool>(type: "bit", nullable: false),
+                    MiusuarioId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cuentas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cuentas_Usuarios_MiusuarioId",
+                        column: x => x.MiusuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cuentas_MiusuarioId",
+                table: "Cuentas",
+                column: "MiusuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_MirolId",
+                table: "Usuarios",
+                column: "MirolId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -147,10 +170,10 @@ namespace Proyecto_SW_II.Migrations
                 name: "RelacionesCategoriaPelicula");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Roles");
         }
     }
 }
