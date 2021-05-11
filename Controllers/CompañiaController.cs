@@ -11,11 +11,11 @@ using Proyecto_SW_II.Models;
 
 namespace Proyecto_SW_II.Controllers
 {
-    public class CuentasController : Controller
+    public class CompañiaController : Controller
     {
         private readonly AplicationDBContext _context;
 
-        public CuentasController(AplicationDBContext context)
+        public CompañiaController(AplicationDBContext context)
         {
             _context = context;
         }
@@ -28,19 +28,14 @@ namespace Proyecto_SW_II.Controllers
             return false;
         }
 
-        // GET: Cuentas
+        // GET: Compañia
         public async Task<IActionResult> Index()
-        {
-            if (!acceso()) return NotFound();
-            return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
+        {         
+            if(!acceso())return NotFound();
+            return View(await _context.Compañias.ToListAsync());
         }
 
-        public async Task<Cuenta> getCuentaById(int? id)
-        {
-            return await _context.Cuentas.Include(u => u.Miusuario).FirstOrDefaultAsync(m => m.Id == id);
-        }
-
-        // GET: Cuentas/Details/5
+        // GET: Compañia/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (!acceso()) return NotFound();
@@ -49,40 +44,40 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var cuenta = await _context.Cuentas
+            var compañia = await _context.Compañias
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuenta == null)
+            if (compañia == null)
             {
                 return NotFound();
             }
 
-            return View(cuenta);
+            return View(compañia);
         }
 
-        // GET: Cuentas/Create
+        // GET: Compañia/Create
         public IActionResult Create()
         {
             if (!acceso()) return NotFound();
             return View();
         }
 
-        // POST: Cuentas/Create
+        // POST: Compañia/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
+        public async Task<IActionResult> Create([Bind("Id,Nombre")] Compañia compañia)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cuenta);
+                _context.Add(compañia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cuenta);
+            return View(compañia);
         }
 
-        // GET: Cuentas/Edit/5
+        // GET: Compañia/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (!acceso()) return NotFound();
@@ -91,22 +86,22 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var cuenta = await _context.Cuentas.FindAsync(id);
-            if (cuenta == null)
+            var compañia = await _context.Compañias.FindAsync(id);
+            if (compañia == null)
             {
                 return NotFound();
             }
-            return View(cuenta);
+            return View(compañia);
         }
 
-        // POST: Cuentas/Edit/5
+        // POST: Compañia/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Compañia compañia)
         {
-            if (id != cuenta.Id)
+            if (id != compañia.Id)
             {
                 return NotFound();
             }
@@ -115,12 +110,12 @@ namespace Proyecto_SW_II.Controllers
             {
                 try
                 {
-                    _context.Update(cuenta);
+                    _context.Update(compañia);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CuentaExists(cuenta.Id))
+                    if (!CompañiaExists(compañia.Id))
                     {
                         return NotFound();
                     }
@@ -131,10 +126,10 @@ namespace Proyecto_SW_II.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cuenta);
+            return View(compañia);
         }
 
-        // GET: Cuentas/Delete/5
+        // GET: Compañia/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (!acceso()) return NotFound();
@@ -143,30 +138,30 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var cuenta = await _context.Cuentas
+            var compañia = await _context.Compañias
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuenta == null)
+            if (compañia == null)
             {
                 return NotFound();
             }
 
-            return View(cuenta);
+            return View(compañia);
         }
 
-        // POST: Cuentas/Delete/5
+        // POST: Compañia/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cuenta = await _context.Cuentas.FindAsync(id);
-            _context.Cuentas.Remove(cuenta);
+            var compañia = await _context.Compañias.FindAsync(id);
+            _context.Compañias.Remove(compañia);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CuentaExists(int id)
+        private bool CompañiaExists(int id)
         {
-            return _context.Cuentas.Any(e => e.Id == id);
+            return _context.Compañias.Any(e => e.Id == id);
         }
     }
 }

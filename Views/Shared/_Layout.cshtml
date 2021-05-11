@@ -12,6 +12,7 @@
 </head>
 <body>
     <header>
+        <!--<nav class="navbar navbar-light" style="background-color: #e3f2fd;">-->
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto ingenieria de software II</a>
@@ -20,10 +21,37 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("TipoUsuario") != null)
+                        {
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("TipoUsuario") == "Administrador")
+                            {
+                                <li @ViewBag.Home>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cuentas" asp-action="Index">Gestion Cuentas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Gestion Categorias</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">Gestion Peliculas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Compañia" asp-action="Index">Gestion Compañias</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">MiLista</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Explorar peliculas</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>
@@ -68,3 +96,9 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+<script>
+    $('#myTab a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>

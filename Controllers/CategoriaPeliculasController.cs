@@ -4,109 +4,91 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_SW_II.Data;
 using Proyecto_SW_II.Models;
 
 namespace Proyecto_SW_II.Controllers
 {
-    public class CuentasController : Controller
+    public class CategoriaPeliculasController : Controller
     {
         private readonly AplicationDBContext _context;
 
-        public CuentasController(AplicationDBContext context)
+        public CategoriaPeliculasController(AplicationDBContext context)
         {
             _context = context;
         }
 
-        public Boolean acceso()
-        {
-            if (HttpContext.Session.GetString("TipoUsuario") == null) return false;
-            if (HttpContext.Session.GetString("TipoUsuario") == "Cliente") return false;
-            if (HttpContext.Session.GetString("TipoUsuario") == "Administrador") return true;
-            return false;
-        }
-
-        // GET: Cuentas
+        // GET: CategoriaPeliculas
         public async Task<IActionResult> Index()
         {
-            if (!acceso()) return NotFound();
-            return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
+            return View(await _context.RelacionesCategoriaPelicula.ToListAsync());
         }
 
-        public async Task<Cuenta> getCuentaById(int? id)
-        {
-            return await _context.Cuentas.Include(u => u.Miusuario).FirstOrDefaultAsync(m => m.Id == id);
-        }
-
-        // GET: Cuentas/Details/5
+        // GET: CategoriaPeliculas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cuenta = await _context.Cuentas
+            var categoriaPelicula = await _context.RelacionesCategoriaPelicula
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuenta == null)
+            if (categoriaPelicula == null)
             {
                 return NotFound();
             }
 
-            return View(cuenta);
+            return View(categoriaPelicula);
         }
 
-        // GET: Cuentas/Create
+        // GET: CategoriaPeliculas/Create
         public IActionResult Create()
         {
-            if (!acceso()) return NotFound();
             return View();
         }
 
-        // POST: Cuentas/Create
+        // POST: CategoriaPeliculas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
+        public async Task<IActionResult> Create([Bind("Id")] CategoriaPelicula categoriaPelicula)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cuenta);
+                _context.Add(categoriaPelicula);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cuenta);
+            return View(categoriaPelicula);
         }
 
-        // GET: Cuentas/Edit/5
+        // GET: CategoriaPeliculas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cuenta = await _context.Cuentas.FindAsync(id);
-            if (cuenta == null)
+            var categoriaPelicula = await _context.RelacionesCategoriaPelicula.FindAsync(id);
+            if (categoriaPelicula == null)
             {
                 return NotFound();
             }
-            return View(cuenta);
+            return View(categoriaPelicula);
         }
 
-        // POST: Cuentas/Edit/5
+        // POST: CategoriaPeliculas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id")] CategoriaPelicula categoriaPelicula)
         {
-            if (id != cuenta.Id)
+            if (id != categoriaPelicula.Id)
             {
                 return NotFound();
             }
@@ -115,12 +97,12 @@ namespace Proyecto_SW_II.Controllers
             {
                 try
                 {
-                    _context.Update(cuenta);
+                    _context.Update(categoriaPelicula);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CuentaExists(cuenta.Id))
+                    if (!CategoriaPeliculaExists(categoriaPelicula.Id))
                     {
                         return NotFound();
                     }
@@ -131,42 +113,41 @@ namespace Proyecto_SW_II.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cuenta);
+            return View(categoriaPelicula);
         }
 
-        // GET: Cuentas/Delete/5
+        // GET: CategoriaPeliculas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cuenta = await _context.Cuentas
+            var categoriaPelicula = await _context.RelacionesCategoriaPelicula
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuenta == null)
+            if (categoriaPelicula == null)
             {
                 return NotFound();
             }
 
-            return View(cuenta);
+            return View(categoriaPelicula);
         }
 
-        // POST: Cuentas/Delete/5
+        // POST: CategoriaPeliculas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cuenta = await _context.Cuentas.FindAsync(id);
-            _context.Cuentas.Remove(cuenta);
+            var categoriaPelicula = await _context.RelacionesCategoriaPelicula.FindAsync(id);
+            _context.RelacionesCategoriaPelicula.Remove(categoriaPelicula);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CuentaExists(int id)
+        private bool CategoriaPeliculaExists(int id)
         {
-            return _context.Cuentas.Any(e => e.Id == id);
+            return _context.RelacionesCategoriaPelicula.Any(e => e.Id == id);
         }
     }
 }

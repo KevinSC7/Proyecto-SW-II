@@ -39,14 +39,13 @@ namespace Proyecto_SW_II.Controllers
         public async Task<IActionResult> Registro(Usuario usuario, Cuenta cuenta)
         {
             IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
-            ModelState.Clear();
+            //ModelState.Clear();
 
-            if (TryValidateModel(datos))
+            if (!TryValidateModel(datos))
             {
-                return RedirectToAction(nameof(Privacy));
+                return View(datos);
             }
             
-            return View(datos);
             if (_context.Cuentas.Any(c => c.Nombre == cuenta.Nombre)) return View(datos);
             var r=await _context.Roles.FindAsync(2);
             
@@ -60,11 +59,13 @@ namespace Proyecto_SW_II.Controllers
                 await _context.SaveChangesAsync();
                 HttpContext.Session.SetString("NombreSession", cuenta.Nombre);
                 HttpContext.Session.SetInt32("ID", cuenta.Id);
+                HttpContext.Session.SetString("TipoUsuario", "Cliente");
                 return RedirectToAction(nameof(Index));
             }
             else
             {
                 //error tu no tienes 18
+                ViewData["mensaje"] = "Debes de ser mayor de edad para registrarte";
                 return View(datos);
             }
             
@@ -77,9 +78,14 @@ namespace Proyecto_SW_II.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string Nombre, string Contraseña)
+        public async Task<IActionResult> Login(string Nombre, string Contraseña)
         {
             var miCuenta =_context.Cuentas.FirstOrDefault(n => n.Nombre == Nombre && n.Contraseña == Contraseña);
+            
+            CuentasController cc = new CuentasController(_context);
+            UsuariosController uc = new UsuariosController(_context);
+            miCuenta = await cc.getCuentaById(miCuenta.Id);
+            var user = await uc.getUsuarioById(miCuenta.Miusuario.Id);
 
             if (miCuenta == null)
             {
@@ -89,6 +95,15 @@ namespace Proyecto_SW_II.Controllers
             {
                 HttpContext.Session.SetString("NombreSession", Nombre);
                 HttpContext.Session.SetInt32("ID", miCuenta.Id);
+                if(user.Mirol.TipoUsuario == 'A')
+                {
+                    HttpContext.Session.SetString("TipoUsuario", "Administrador");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("TipoUsuario", "Cliente");
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -97,14 +112,16 @@ namespace Proyecto_SW_II.Controllers
         {
             HttpContext.Session.Remove("NombreSession");
             HttpContext.Session.Remove("ID");
+            HttpContext.Session.Remove("TipoUsuario");
             return RedirectToAction(nameof(Index));
         }
-
+        
         public async Task<IActionResult> MisDatos()
         {
             CuentasController cc = new CuentasController(_context);
-            var cuenta = await cc.getCuentaById(HttpContext.Session.GetInt32("ID"));
             
+            var cuenta = await cc.getCuentaById(HttpContext.Session.GetInt32("ID"));
+
             if (cuenta == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -116,6 +133,21 @@ namespace Proyecto_SW_II.Controllers
             }
             IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(user, cuenta, null);
             return View(datos);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MisDatos(Usuario usuario, Cuenta cuenta)
+        {
+            IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
+            if (!TryValidateModel(datos))
+            {
+                View(datos);
+            }
+            _context.Update(usuario);
+            _context.Update(cuenta);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_SW_II.Data;
 using Proyecto_SW_II.Models;
@@ -19,15 +20,25 @@ namespace Proyecto_SW_II.Controllers
             _context = context;
         }
 
+        public Boolean acceso()
+        {
+            if (HttpContext.Session.GetString("TipoUsuario") == null) return false;
+            if (HttpContext.Session.GetString("TipoUsuario") == "Cliente") return false;
+            if (HttpContext.Session.GetString("TipoUsuario") == "Administrador") return true;
+            return false;
+        }
+
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
+            if (!acceso()) return NotFound();
             return View(await _context.Categorias.ToListAsync());
         }
 
         // GET: Categorias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +57,7 @@ namespace Proyecto_SW_II.Controllers
         // GET: Categorias/Create
         public IActionResult Create()
         {
+            if (!acceso()) return NotFound();
             return View();
         }
 
@@ -68,6 +80,7 @@ namespace Proyecto_SW_II.Controllers
         // GET: Categorias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
@@ -119,6 +132,7 @@ namespace Proyecto_SW_II.Controllers
         // GET: Categorias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();

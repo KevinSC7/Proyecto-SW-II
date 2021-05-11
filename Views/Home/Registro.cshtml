@@ -56,6 +56,11 @@
                 <label asp-for="usuario.FechaNacimiento" class="control-label">Fecha de nacimiento</label>
                 <input asp-for="usuario.FechaNacimiento" class="form-control" />
                 <span asp-validation-for="usuario.FechaNacimiento" class="text-danger"></span>
+                @if (ViewData["mensaje"] != null)
+                {
+                    <span class="text-danger">@ViewData["mensaje"]</span>
+                }
+
             </div>
         </div>
         <div class="col-md-4">
