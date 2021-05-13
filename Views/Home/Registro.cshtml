@@ -1,0 +1,111 @@
+﻿@model Proyecto_SW_II.Models.IntermedioCuentaUsuarioRol
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Crear una cuenta</h4>
+
+<hr />
+<b>Datos personales:</b>
+<br />
+<form asp-controller="Home" asp-action="Registro">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="usuario.Nombre" class="control-label"></label>
+                <input asp-for="usuario.Nombre" class="form-control" />
+                <span asp-validation-for="usuario.Nombre" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="usuario.Apellido1" class="control-label">Primer apellido</label>
+                <input asp-for="usuario.Apellido1" class="form-control" />
+                <span asp-validation-for="usuario.Apellido1" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="usuario.Apellido2" class="control-label">Segundo apellido</label>
+                <input asp-for="usuario.Apellido2" class="form-control" />
+                <span asp-validation-for="usuario.Apellido2" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="usuario.Direccion" class="control-label"></label>
+                <input asp-for="usuario.Direccion" class="form-control" />
+                <span asp-validation-for="usuario.Direccion" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="usuario.Dni" class="control-label">DNI/NIF</label>
+                <input asp-for="usuario.Dni" class="form-control" />
+                <span asp-validation-for="usuario.Dni" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="usuario.FechaNacimiento" class="control-label">Fecha de nacimiento</label>
+                <input asp-for="usuario.FechaNacimiento" class="form-control" />
+                <span asp-validation-for="usuario.FechaNacimiento" class="text-danger"></span>
+                @if (ViewData["mensaje"] != null)
+                {
+                    <span class="text-danger">@ViewData["mensaje"]</span>
+                }
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="usuario.Telefono" class="control-label"></label>
+                <input asp-for="usuario.Telefono" class="form-control" />
+                <span asp-validation-for="usuario.Telefono" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <b>Sobre su cuenta:</b><br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="cuenta.Nombre" class="control-label">Nombre de usuario</label>
+                <input asp-for="cuenta.Nombre" class="form-control" />
+                <span asp-validation-for="cuenta.Nombre" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="cuenta.Contraseña" class="control-label"></label>
+                <input asp-for="cuenta.Contraseña" class="form-control" />
+                <span asp-validation-for="cuenta.Contraseña" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Retype</label>
+                <input type="password" name="retype" class="form-control" />
+                <span asp-validation-for="cuenta.Contraseña" class="text-danger"></span>
+                @if(ViewData["retype"] != null)
+                {
+                    <span class="text-danger">@ViewData["retype"].ToString()</span>
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Volver a inicio</a>
+</div>

@@ -11,11 +11,11 @@ using Proyecto_SW_II.Models;
 
 namespace Proyecto_SW_II.Controllers
 {
-    public class CategoriasController : Controller
+    public class CompañiaController : Controller
     {
         private readonly AplicationDBContext _context;
 
-        public CategoriasController(AplicationDBContext context)
+        public CompañiaController(AplicationDBContext context)
         {
             _context = context;
         }
@@ -28,14 +28,14 @@ namespace Proyecto_SW_II.Controllers
             return false;
         }
 
-        // GET: Categorias
+        // GET: Compañia
         public async Task<IActionResult> Index()
-        {
-            if (!acceso()) return NotFound();
-            return View(await _context.Categorias.ToListAsync());
+        {         
+            if(!acceso())return NotFound();
+            return View(await _context.Compañias.ToListAsync());
         }
 
-        // GET: Categorias/Details/5
+        // GET: Compañia/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (!acceso()) return NotFound();
@@ -44,40 +44,40 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var compañia = await _context.Compañias
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (compañia == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(compañia);
         }
 
-        // GET: Categorias/Create
+        // GET: Compañia/Create
         public IActionResult Create()
         {
             if (!acceso()) return NotFound();
             return View();
         }
 
-        // POST: Categorias/Create
+        // POST: Compañia/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Id,Nombre")] Compañia compañia)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
+                _context.Add(compañia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(compañia);
         }
 
-        // GET: Categorias/Edit/5
+        // GET: Compañia/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (!acceso()) return NotFound();
@@ -86,22 +86,22 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias.FindAsync(id);
-            if (categoria == null)
+            var compañia = await _context.Compañias.FindAsync(id);
+            if (compañia == null)
             {
                 return NotFound();
             }
-            return View(categoria);
+            return View(compañia);
         }
 
-        // POST: Categorias/Edit/5
+        // POST: Compañia/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Compañia compañia)
         {
-            if (id != categoria.Id)
+            if (id != compañia.Id)
             {
                 return NotFound();
             }
@@ -110,12 +110,12 @@ namespace Proyecto_SW_II.Controllers
             {
                 try
                 {
-                    _context.Update(categoria);
+                    _context.Update(compañia);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoriaExists(categoria.Id))
+                    if (!CompañiaExists(compañia.Id))
                     {
                         return NotFound();
                     }
@@ -126,10 +126,10 @@ namespace Proyecto_SW_II.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(compañia);
         }
 
-        // GET: Categorias/Delete/5
+        // GET: Compañia/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (!acceso()) return NotFound();
@@ -138,30 +138,30 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var compañia = await _context.Compañias
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (compañia == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(compañia);
         }
 
-        // POST: Categorias/Delete/5
+        // POST: Compañia/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            _context.Categorias.Remove(categoria);
+            var compañia = await _context.Compañias.FindAsync(id);
+            _context.Compañias.Remove(compañia);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoriaExists(int id)
+        private bool CompañiaExists(int id)
         {
-            return _context.Categorias.Any(e => e.Id == id);
+            return _context.Compañias.Any(e => e.Id == id);
         }
     }
 }

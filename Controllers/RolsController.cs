@@ -11,11 +11,11 @@ using Proyecto_SW_II.Models;
 
 namespace Proyecto_SW_II.Controllers
 {
-    public class CategoriasController : Controller
+    public class RolsController : Controller
     {
         private readonly AplicationDBContext _context;
 
-        public CategoriasController(AplicationDBContext context)
+        public RolsController(AplicationDBContext context)
         {
             _context = context;
         }
@@ -28,14 +28,14 @@ namespace Proyecto_SW_II.Controllers
             return false;
         }
 
-        // GET: Categorias
+        // GET: Rols
         public async Task<IActionResult> Index()
         {
             if (!acceso()) return NotFound();
-            return View(await _context.Categorias.ToListAsync());
+            return View(await _context.Roles.ToListAsync());
         }
 
-        // GET: Categorias/Details/5
+        // GET: Rols/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (!acceso()) return NotFound();
@@ -44,40 +44,40 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var rol = await _context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (rol == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(rol);
         }
 
-        // GET: Categorias/Create
+        // GET: Rols/Create
         public IActionResult Create()
         {
             if (!acceso()) return NotFound();
             return View();
         }
 
-        // POST: Categorias/Create
+        // POST: Rols/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Id,TipoUsuario,Descripcion")] Rol rol)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
+                _context.Add(rol);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(rol);
         }
 
-        // GET: Categorias/Edit/5
+        // GET: Rols/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (!acceso()) return NotFound();
@@ -86,22 +86,22 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias.FindAsync(id);
-            if (categoria == null)
+            var rol = await _context.Roles.FindAsync(id);
+            if (rol == null)
             {
                 return NotFound();
             }
-            return View(categoria);
+            return View(rol);
         }
 
-        // POST: Categorias/Edit/5
+        // POST: Rols/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TipoUsuario,Descripcion")] Rol rol)
         {
-            if (id != categoria.Id)
+            if (id != rol.Id)
             {
                 return NotFound();
             }
@@ -110,12 +110,12 @@ namespace Proyecto_SW_II.Controllers
             {
                 try
                 {
-                    _context.Update(categoria);
+                    _context.Update(rol);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoriaExists(categoria.Id))
+                    if (!RolExists(rol.Id))
                     {
                         return NotFound();
                     }
@@ -126,10 +126,10 @@ namespace Proyecto_SW_II.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(rol);
         }
 
-        // GET: Categorias/Delete/5
+        // GET: Rols/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (!acceso()) return NotFound();
@@ -138,30 +138,30 @@ namespace Proyecto_SW_II.Controllers
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var rol = await _context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (rol == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(rol);
         }
 
-        // POST: Categorias/Delete/5
+        // POST: Rols/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            _context.Categorias.Remove(categoria);
+            var rol = await _context.Roles.FindAsync(id);
+            _context.Roles.Remove(rol);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoriaExists(int id)
+        private bool RolExists(int id)
         {
-            return _context.Categorias.Any(e => e.Id == id);
+            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }

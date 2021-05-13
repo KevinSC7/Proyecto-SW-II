@@ -14,46 +14,76 @@ namespace Proyecto_SW_II.Models
                 serviceProvider.GetRequiredService<
                     DbContextOptions<AplicationDBContext>>()))
             {
-                // Look for any movies.
-                if (context.Usuarios.Any())
+
+                if (!context.Roles.Any())
                 {
-                    return;   // DB has been seeded
+                    context.Roles.AddRange(
+                     new Rol
+                     {
+                         TipoUsuario = 'A',
+                         Descripcion = "Administrador: administra categorias, peliculas, cuentas cambio de rol y compañias"
+                     },
+                     new Rol
+                     {
+                         TipoUsuario = 'C',
+                         Descripcion = "Cliente: administra sus datos, explora y alquila peliculas y administra sus peliculas alquiladas"
+                     }
+                 );
+                    context.SaveChanges();
                 }
 
-                /*context.Movie.AddRange(
-                    new Movie
-                    {
-                        Title = "When Harry Met Sally",
-                        ReleaseDate = DateTime.Parse("1989-2-12"),
-                        Genre = "Romantic Comedy",
-                        Price = 7.99M
-                    },
 
-                    new Movie
+                /*if (!context.Usuarios.Any())
+                {
+                    context.Usuarios.Add(new Usuario
                     {
-                        Title = "Ghostbusters ",
-                        ReleaseDate = DateTime.Parse("1984-3-13"),
-                        Genre = "Comedy",
-                        Price = 8.99M
-                    },
-
-                    new Movie
+                        Nombre = "ROOT",
+                        Apellido1 = "",
+                        Apellido2 = "",
+                        Direccion = "",
+                        Dni = "",
+                        Edad = 20,
+                        FechaNacimiento = DateTime.Now,
+                        Telefono = "987213696",
+                        Mirol = context.Roles.Find(1)
+                    });
+                    context.SaveChanges();
+                }
+                if (!context.Cuentas.Any())
+                {
+                    context.Cuentas.Add(
+                    new Cuenta
                     {
-                        Title = "Ghostbusters 2",
-                        ReleaseDate = DateTime.Parse("1986-2-23"),
-                        Genre = "Comedy",
-                        Price = 9.99M
-                    },
-
-                    new Movie
-                    {
-                        Title = "Rio Bravo",
-                        ReleaseDate = DateTime.Parse("1959-4-15"),
-                        Genre = "Western",
-                        Price = 3.99M
-                    }
-                );*/
-                context.SaveChanges();
+                        Contraseña = "SOY_ADMIN",
+                        Estado = true,
+                        Nombre = "ROOT",
+                        Miusuario = context.Usuarios.Find(1)
+                    });
+                    context.SaveChanges();
+                }*/
+                if (!context.Cuentas.Any())
+                {
+                    context.Cuentas.Add(
+                        new Cuenta
+                        {
+                            Contraseña = "SOY_ADMIN",
+                            Estado = true,
+                            Nombre = "ROOT",
+                            Miusuario = new Usuario
+                            {
+                                Nombre = "ROOT",
+                                Apellido1 = "",
+                                Apellido2 = "",
+                                Direccion = "",
+                                Dni = "",
+                                FechaNacimiento = DateTime.Now,
+                                Telefono = "987213696",
+                                Mirol = context.Roles.Find(1)
+                            }
+                        }
+                    );
+                    context.SaveChanges();
+                }
             }
         }
     }

@@ -4,104 +4,91 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_SW_II.Data;
 using Proyecto_SW_II.Models;
 
 namespace Proyecto_SW_II.Controllers
 {
-    public class CategoriasController : Controller
+    public class AlquilersController : Controller
     {
         private readonly AplicationDBContext _context;
 
-        public CategoriasController(AplicationDBContext context)
+        public AlquilersController(AplicationDBContext context)
         {
             _context = context;
         }
 
-        public Boolean acceso()
-        {
-            if (HttpContext.Session.GetString("TipoUsuario") == null) return false;
-            if (HttpContext.Session.GetString("TipoUsuario") == "Cliente") return false;
-            if (HttpContext.Session.GetString("TipoUsuario") == "Administrador") return true;
-            return false;
-        }
-
-        // GET: Categorias
+        // GET: Alquilers
         public async Task<IActionResult> Index()
         {
-            if (!acceso()) return NotFound();
-            return View(await _context.Categorias.ToListAsync());
+            return View(await _context.Alquileres.ToListAsync());
         }
 
-        // GET: Categorias/Details/5
+        // GET: Alquilers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var alquiler = await _context.Alquileres
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (alquiler == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(alquiler);
         }
 
-        // GET: Categorias/Create
+        // GET: Alquilers/Create
         public IActionResult Create()
         {
-            if (!acceso()) return NotFound();
             return View();
         }
 
-        // POST: Categorias/Create
+        // POST: Alquilers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Create([Bind("Id,Pago,FechaComienzo,FechaFin")] Alquiler alquiler)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categoria);
+                _context.Add(alquiler);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(alquiler);
         }
 
-        // GET: Categorias/Edit/5
+        // GET: Alquilers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias.FindAsync(id);
-            if (categoria == null)
+            var alquiler = await _context.Alquileres.FindAsync(id);
+            if (alquiler == null)
             {
                 return NotFound();
             }
-            return View(categoria);
+            return View(alquiler);
         }
 
-        // POST: Categorias/Edit/5
+        // POST: Alquilers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Categoria categoria)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Pago,FechaComienzo,FechaFin")] Alquiler alquiler)
         {
-            if (id != categoria.Id)
+            if (id != alquiler.Id)
             {
                 return NotFound();
             }
@@ -110,12 +97,12 @@ namespace Proyecto_SW_II.Controllers
             {
                 try
                 {
-                    _context.Update(categoria);
+                    _context.Update(alquiler);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoriaExists(categoria.Id))
+                    if (!AlquilerExists(alquiler.Id))
                     {
                         return NotFound();
                     }
@@ -126,42 +113,41 @@ namespace Proyecto_SW_II.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(categoria);
+            return View(alquiler);
         }
 
-        // GET: Categorias/Delete/5
+        // GET: Alquilers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (!acceso()) return NotFound();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var categoria = await _context.Categorias
+            var alquiler = await _context.Alquileres
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (categoria == null)
+            if (alquiler == null)
             {
                 return NotFound();
             }
 
-            return View(categoria);
+            return View(alquiler);
         }
 
-        // POST: Categorias/Delete/5
+        // POST: Alquilers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categoria = await _context.Categorias.FindAsync(id);
-            _context.Categorias.Remove(categoria);
+            var alquiler = await _context.Alquileres.FindAsync(id);
+            _context.Alquileres.Remove(alquiler);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoriaExists(int id)
+        private bool AlquilerExists(int id)
         {
-            return _context.Categorias.Any(e => e.Id == id);
+            return _context.Alquileres.Any(e => e.Id == id);
         }
     }
 }

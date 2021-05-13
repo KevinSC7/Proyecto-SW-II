@@ -1,31 +1,81 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Proyecto ingenieria de software II</title>
+    <title>@ViewData["Title"] - Videoclub</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto ingenieria de software II</a>
+        <!--<nav class="navbar navbar-light" style="background-color: #e3f2fd;">-->
+        <nav style="white-space:nowrap;" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container flex-nowrap">
+                <a class="navbar-brand flex-nowrap" style="white-space:nowrap;" asp-area="" asp-controller="Home" asp-action="Index">Proyecto ingenieria de software II</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse flex-nowrap">
+                    <ul class="nav nav-tabs flex-nowrap">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("TipoUsuario") != null)
+                        {
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("TipoUsuario") == "Administrador")
+                            {
+                                <li @ViewBag.Home>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Cuentas" asp-action="Index">Gestion Cuentas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Gestion Categorias</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">Gestion Peliculas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Compañia" asp-action="Index">Gestion Compañias</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">MiLista</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Explorar peliculas</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse flex-nowrap">
+                <ul class="navbar-nav flex-grow-1 flex-nowrap">
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
+                    {
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-info" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="MisDatos">Hola <b>@HttpContextAccessor.HttpContext.Session.GetString("NombreSession")</b></a>
+                        </li>
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-danger" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-success" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="Registro">Registrarse</a>
+                        </li>
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-success" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="Login">Iniciar sesión</a>
+                        </li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>
@@ -35,7 +85,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" style="background-color:white;">
         <div class="container">
             &copy; 2021 - Proyecto ingenieria de software II - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -46,3 +96,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+

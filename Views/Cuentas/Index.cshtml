@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Proyecto_SW_II.Models.Cuenta>
+
+@{ ViewData["Title"] = "Index"; }
+
+<script src="~/js/site.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var check1 = document.getElementsByName('check1')[0];
+        check1.checked = true;
+    }
+</script>
+
+<h1>Listado de cuentas</h1>
+@if(ViewData["dato"] != null)
+{
+    <p>@ViewData["dato"].ToString()</p>
+}
+<br />
+<div class="container" style="width:50%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Cuentas" asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-6 my-auto">
+                <div class="input-group flex-nowrap">
+                    <input type="text" name="searchString" class="form-control" placeholder="Search" />
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+            <div class="col my-auto">
+                <label class="text-black-50 my-auto"><input type="checkbox" class="form-check-input" value="Habilitadas" name="check1" onchange="alwaysWithCheck2(this)" />Habilitadas</label>
+            </div>
+            <div class="col my-auto">
+                <label class="text-black-50 my-auto"><input type="checkbox" class="form-check-input" value="Deshabilitadas" name="check2" onchange="alwaysWithCheck2(this)" />Deshabilitadas</label>
+            </div>
+        </div>
+    </form>
+</div>
+<br />
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contraseña)
+            </th>
+            <th>
+                @Html.DisplayName("Habilitación")
+            </th>
+            <th>
+                @Html.DisplayName("Pertenencia")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Contraseña)
+    </td>
+    <td>
+        @if (item.Estado == true)
+        {
+            <p class="text-success">Habilitada</p> 
+        }
+        else
+        {
+            <p class="text-danger">Deshabilitada</p>
+        }
+    </td>
+    <th>
+        <a asp-controller="Usuarios" asp-action="Details" asp-route-id="@item.Miusuario.Id">Ver datos</a>
+    </th>
+    <td>
+        <a class="btn btn-outline-primary" style="padding: 4px;" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+        <a class="btn btn-outline-primary" style="padding: 4px;" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+    </td>
+</tr>
+}
+    </tbody>
+</table>
+
+

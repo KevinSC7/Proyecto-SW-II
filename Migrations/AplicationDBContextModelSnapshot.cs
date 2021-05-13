@@ -32,8 +32,8 @@ namespace Proyecto_SW_II.Migrations
                     b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Pago")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Pago")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -96,14 +96,19 @@ namespace Proyecto_SW_II.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("Estado")
-                        .HasColumnType("bit");
+                    b.Property<int?>("MiusuarioId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("_Estado")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MiusuarioId");
 
                     b.ToTable("Cuentas");
                 });
@@ -178,11 +183,11 @@ namespace Proyecto_SW_II.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("MirolId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -195,7 +200,27 @@ namespace Proyecto_SW_II.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MirolId");
+
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Proyecto_SW_II.Models.Cuenta", b =>
+                {
+                    b.HasOne("Proyecto_SW_II.Models.Usuario", "Miusuario")
+                        .WithMany()
+                        .HasForeignKey("MiusuarioId");
+
+                    b.Navigation("Miusuario");
+                });
+
+            modelBuilder.Entity("Proyecto_SW_II.Models.Usuario", b =>
+                {
+                    b.HasOne("Proyecto_SW_II.Models.Rol", "Mirol")
+                        .WithMany()
+                        .HasForeignKey("MirolId");
+
+                    b.Navigation("Mirol");
                 });
 #pragma warning restore 612, 618
         }
