@@ -7,15 +7,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<body style="background-color:#36B5BE">
+<body style="background-color:#5cb85c">
 
-    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="max-width:100%; min-height:400px; background-color: #178890;">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="max-width:100%; min-height:400px; background-color: #a1cb58;">
 
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
 
             <div class="item active">
-                <div class="row">
+                <div class="row flex-nowrap">
                     <div class="col"><img src="~/Images/El_Reino_Prohibido.jpg" alt="El Reino Prohibido" style="max-width:800px; max-height: 400px;"></div>
                     <div class="col"><img src="~/Images/Boyka.jpg" alt="Undisputed II" style="max-width:800px; max-height: 400px;"></div>
                     <div class="col"><img src="~/Images/Clint.jpg" alt="La muerte tenia un precio" style="max-width:800px; max-height: 400px;"></div>
@@ -23,14 +23,14 @@
             </div>
 
             <div class="item">
-                <div class="row">
+                <div class="row flex-nowrap">
                     <div class="col"><img src="~/Images/Lilo.jpg" alt="Lilo y Stitch" style="max-width:800px; max-height: 400px;"></div>
                     <div class="col"><img src="~/Images/Rey_Leon.jpg" alt="El Rey León" style="max-width:400px; max-height: 400px;"></div>
                     <div class="col"><img src="~/Images/coco.jpg" alt="Coco" style="max-width:800px; max-height: 400px;"></div>
                 </div>
             </div>
             <div class="item">
-                <div class="row">
+                <div class="row flex-nowrap">
                     <div class="col"><img src="~/Images/lincoln.jpg" alt="Lincoln" style="max-width:800px; max-height: 400px;"></div>
                     <div class="col"><img src="~/Images/Franco_documental.jpg" alt="Franco" style="max-width:800px; max-height: 400px;"></div>
                     <div class="col"><img src="~/Images/kurt_cobain.jpg" alt="Escopeta" style="max-width:400px; max-height: 400px;"></div>
@@ -39,18 +39,17 @@
 
         </div>
         <!-- Controls -->
-        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <a class="left carousel-control flex-nowrap" href="#carousel-example-generic" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <a class="right carousel-control flex-nowrap" href="#carousel-example-generic" role="button" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
     </div>
     <div>
         <h1>Descuentos en peliculas esta semana</h1>
-
     </div>
     <div>
         @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
@@ -61,5 +60,5 @@
         {
             <p>No hay lista</p>
         }
-    </div>
+    </div><br />
 </body>

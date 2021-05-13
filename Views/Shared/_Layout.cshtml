@@ -13,15 +13,15 @@
 <body>
     <header>
         <!--<nav class="navbar navbar-light" style="background-color: #e3f2fd;">-->
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto ingenieria de software II</a>
+        <nav style="white-space:nowrap;" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container flex-nowrap">
+                <a class="navbar-brand flex-nowrap" style="white-space:nowrap;" asp-area="" asp-controller="Home" asp-action="Index">Proyecto ingenieria de software II</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="nav nav-tabs">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse flex-nowrap">
+                    <ul class="nav nav-tabs flex-nowrap">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -55,24 +55,24 @@
                     </ul>
                 </div>
             </div>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <ul class="navbar-nav flex-grow-1">
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse flex-nowrap">
+                <ul class="navbar-nav flex-grow-1 flex-nowrap">
                     @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="MisDatos">Hola @HttpContextAccessor.HttpContext.Session.GetString("NombreSession")</a>
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-info" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="MisDatos">Hola <b>@HttpContextAccessor.HttpContext.Session.GetString("NombreSession")</b></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-danger" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Registro">Registrarse</a>
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-success" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="Registro">Registrarse</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Login">Iniciar sesión</a>
+                        <li class="nav-item" style="padding: 4px;">
+                            <a class="nav-link text-white btn btn-success" style="white-space:nowrap; padding: 4px;" asp-area="" asp-controller="Home" asp-action="Login">Iniciar sesión</a>
                         </li>
                     }
                 </ul>
@@ -96,9 +96,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-<script>
-    $('#myTab a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
-</script>
+

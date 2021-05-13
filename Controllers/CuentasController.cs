@@ -29,10 +29,43 @@ namespace Proyecto_SW_II.Controllers
         }
 
         // GET: Cuentas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string check1, string check2)
         {
             if (!acceso()) return NotFound();
-            return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
+            var state = true;
+            if(!String.IsNullOrEmpty(check1) && !String.IsNullOrEmpty(check2))
+            {
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    var cuentas = _context.Cuentas.Include(u => u.Miusuario).Where(s => s.Nombre.Contains(searchString));
+                    return View(await cuentas.ToListAsync());
+                }
+                else
+                {
+                    return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
+                }
+            }else if (!String.IsNullOrEmpty(check1))
+            {
+                state = true;
+            }
+            else if (!String.IsNullOrEmpty(check2))
+            {
+                state = false;
+            }
+            else
+            {
+                return View(await _context.Cuentas.Include(u => u.Miusuario).ToListAsync());
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var cuentas = _context.Cuentas.Include(u => u.Miusuario).Where(s => s.Nombre.Contains(searchString) && s._Estado == state);
+                return View(await cuentas.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Cuentas.Include(u => u.Miusuario).Where(s => s._Estado == state).ToListAsync());
+            }
+
         }
 
         public async Task<Cuenta> getCuentaById(int? id)
@@ -55,7 +88,7 @@ namespace Proyecto_SW_II.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["estado"] = cuenta.Estado;
             return View(cuenta);
         }
 
@@ -96,6 +129,8 @@ namespace Proyecto_SW_II.Controllers
             {
                 return NotFound();
             }
+            ViewData["estado"] = cuenta.Estado;
+            ViewData["nombre"] = cuenta.Nombre;
             return View(cuenta);
         }
 
@@ -104,31 +139,32 @@ namespace Proyecto_SW_II.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Contraseña,_Estado")] Cuenta cuenta)
+        public async Task<IActionResult> Edit(int id, Cuenta cuenta)
         {
+            ViewData["estado"] = cuenta._Estado;
             if (id != cuenta.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var c = await this.getCuentaById(cuenta.Id);
+            if(c == null) return NotFound();
+            if (!String.IsNullOrEmpty(cuenta.Contraseña))
             {
-                try
+                if (cuenta.Contraseña.Length < 8)
                 {
-                    _context.Update(cuenta);
-                    await _context.SaveChangesAsync();
+                    ViewData["errorcontra"] = "Debe tener al menos 8 caracteres";
+                    return View(cuenta);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CuentaExists(cuenta.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                c.Contraseña = cuenta.Contraseña;
+            }
+            
+            c._Estado = cuenta._Estado;
+            ModelState.Clear();
+
+            if (TryValidateModel(c))
+            {
+                _context.Update(c);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(cuenta);

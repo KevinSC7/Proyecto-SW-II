@@ -36,9 +36,14 @@ namespace Proyecto_SW_II.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(Usuario usuario, Cuenta cuenta)
+        public async Task<IActionResult> Registro(Usuario usuario, Cuenta cuenta, string retype)
         {
             IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
+            if (cuenta.Contraseña != retype)
+            {
+                ViewData["retype"] = "Retype incorrecto";
+                return View(datos);
+            }
             //ModelState.Clear();
 
             if (!TryValidateModel(datos))
@@ -78,10 +83,28 @@ namespace Proyecto_SW_II.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string Nombre, string Contraseña)
+        public async Task<IActionResult> Login(string Nombre, string Contraseña, string terminos)
         {
-            var miCuenta =_context.Cuentas.FirstOrDefault(n => n.Nombre == Nombre && n.Contraseña == Contraseña);
-            
+            var miCuenta =_context.Cuentas.FirstOrDefault(n => n.Nombre == Nombre);
+            if (miCuenta == null)
+            {
+                ViewData["erroruser"] = "Usuario incorrecto";
+                return View(miCuenta);
+            }
+            else
+            {
+                if(miCuenta.Contraseña != Contraseña)
+                {
+                    ViewData["errorcontra"] = "Contraseña incorrecta";
+                    return View(miCuenta);
+                }
+                else if (String.IsNullOrEmpty(terminos))
+                {
+                    ViewData["errorterminos"] = "No ha aceptado los terminos";
+                    return View(miCuenta);
+                }
+            }
+            if(miCuenta._Estado == false) return RedirectToAction(nameof(Deshabilitada));
             CuentasController cc = new CuentasController(_context);
             UsuariosController uc = new UsuariosController(_context);
             miCuenta = await cc.getCuentaById(miCuenta.Id);
@@ -135,12 +158,45 @@ namespace Proyecto_SW_II.Controllers
             return View(datos);
         }
 
+
+        ////No puedes llamar a los controller de usuario ni cuenta, no actualiza bien, el StateModel cambia
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MisDatos(Usuario usuario, Cuenta cuenta)
+        public async Task<IActionResult> MisDatos(Usuario usuario, Cuenta cuenta, string psw, string retype, string retypenuevapsw, string nuevapsw)
         {
             IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
-            if (!TryValidateModel(datos))
+
+            if (!String.IsNullOrEmpty(nuevapsw))
+            {
+                if(nuevapsw.Length < 8) 
+                {
+                    ViewData["nuevapsw"] = "Debe tener como minimo 8 digitos";
+                    return View(datos);
+                }
+                if(nuevapsw != retypenuevapsw)
+                {
+                    ViewData["retypenuevapsw"] = "Retype incorrecto";
+                    return View(datos);
+                }
+                if(psw != cuenta.Contraseña)
+                {
+                    ViewData["psw"] = "Contraseña incorrecta";
+                    return View(datos);
+                }
+                if(psw != retype)
+                {
+                    ViewData["retype"] = "Retype incorrecto";
+                    return View(datos);
+                }
+                cuenta.Contraseña = nuevapsw;
+            }
+            else if (psw != cuenta.Contraseña)
+            {
+                ViewData["psw"] = "Contraseña incorrecta";
+                return View(datos);
+            }
+            
+           if (!TryValidateModel(datos))
             {
                 View(datos);
             }
@@ -148,6 +204,11 @@ namespace Proyecto_SW_II.Controllers
             _context.Update(cuenta);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Deshabilitada()
+        {
+            return View();
         }
 
         public IActionResult Privacy()

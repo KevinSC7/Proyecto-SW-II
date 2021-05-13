@@ -2,31 +2,54 @@
 @{
     ViewData["Title"] = "Login";
 }
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<div class="login-logo">
+    <img class="img-responsive center-block" src="~/Images/LOGO_camara.jpg" width="80" height="80" />
+</div>
 <form asp-controller="Home" asp-action="Login">
-    <div class="row">
+    <div class="row justify-content-center text-center">
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label">Usuario</label>
-                <input asp-for="Nombre" class="form-control" />
+                <input asp-for="Nombre" class="form-control" placeholder="Usuario" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
+                @if (ViewData["erroruser"] != null)
+                {
+                    <span class="text-danger">@ViewData["erroruser"].ToString()</span>
+                }
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row justify-content-md-center text-center">
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="Contraseña" class="control-label"></label>
-                <input asp-for="Contraseña" class="form-control" />
+                <input asp-for="Contraseña" class="form-control" placeholder="Contraseña" />
                 <span asp-validation-for="Contraseña" class="text-danger"></span>
+                @if (ViewData["errorcontra"] != null)
+                {
+                    <span class="text-danger">@ViewData["errorcontra"].ToString()</span>
+                }
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Login" class="btn btn-primary" />
+    <div class="row justify-content-md-center text-center">
+        <div class="form-group col-md-4">
+            <label><input type="checkbox" name="terminos" /> Acepto los terminos y condiciones</label>
+            @if(ViewData["errorterminos"] != null)
+            {
+                <span class="text-danger">@ViewData["errorterminos"].ToString()</span>
+            }
+        </div>
+    </div>
+    <div class="row justify-content-md-center text-center">
+        <div class="form-group col-md-4">
+            <input class="btn btn-primary" style="padding: 4px;" type="submit" value="Login" />
+            <a class="btn btn-primary" style="padding: 4px;" asp-controller="Home" asp-action="Index">Volver a inicio</a>
+        </div>
     </div>
 </form>
-<div>
-    <a asp-controller="Home" asp-action="Index">Volver a inicio</a>
-</div>
+
