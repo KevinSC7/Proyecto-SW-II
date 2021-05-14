@@ -27,11 +27,22 @@ namespace Proyecto_SW_II.Controllers
             if (HttpContext.Session.GetString("TipoUsuario") == "Administrador") return true;
             return false;
         }
-
+        public async Task<Compañia> getCompañiaById(int? id)
+        {
+            return await _context.Compañias.FirstOrDefaultAsync(m => m.Id == id);
+        }
+        public async Task<List<Compañia>> getLista()
+        {
+            return await _context.Compañias.ToListAsync();
+        }
         // GET: Compañia
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {         
             if(!acceso())return NotFound();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                return View(await _context.Compañias.Where(c => c.Nombre.Contains(searchString)).ToListAsync());
+            }
             return View(await _context.Compañias.ToListAsync());
         }
 

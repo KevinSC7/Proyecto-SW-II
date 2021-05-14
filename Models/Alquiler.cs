@@ -22,5 +22,9 @@ namespace Proyecto_SW_II.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime FechaFin { get; set; }
+
+        public Compañia compañia { get; set; }
+
+        public Cuenta cuenta { get; set; }
     }
 }

@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Listado de películas</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-info" asp-action="Create">Añadir película</a>
 </p>
 <table class="table">
     <thead>
@@ -24,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Portada)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.compañia.Nombre)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,15 +40,18 @@
                 @Html.DisplayFor(modelItem => item.FechaLanzamiento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Precio)
+                @Html.DisplayFor(modelItem => item.Precio)€
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Portada)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.compañia.Nombre)
+            </td>
+            <td>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-outline-danger" style="padding: 4px;" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

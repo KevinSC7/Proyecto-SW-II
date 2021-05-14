@@ -1,45 +1,101 @@
-﻿@model Proyecto_SW_II.Models.Pelicula
+﻿@model Proyecto_SW_II.Models.IntermedioPeliculaCompañia
 
 @{
     ViewData["Title"] = "Create";
 }
+<script type="text/javascript">
+    //Despues de volver de selectCompañia devuelve /Create/id compañia, la cookie se creo en /Create/, por lo que al borrar la cookie al ser
+    // en distinto Path no la borra. SOLUCION: poner en cookie Path=/, desde cualquier path a partir la raiz (~/) borrara la cookie
+    function guardarCambio(object) {
+        if (object.id == 4) {//Avisa de file seleccionado y me da la fakepath
+            var fakepath =  document.getElementById(4).value;
+            var path = fakepath.substring(fakepath.lastIndexOf('\u005C') + 1);//HAY QUE BUSCAR POR UNICODE!!!
+            document.getElementById(5).textContent = path;//fakepath del 4, muestro nombre imagen(cookie->5)
+            document.getElementById(6).value = path;//6=5(valor portada->6)
+            document.cookie = 5 + "=" + path + ";expires=2147483647;path=/";
+        } else {
+            document.cookie = object.id + "=" + object.value + ";expires=2147483647;path=/";
+        }
+    }
+    function clearData() {
+        var cookies = document.cookie.split(";");
+        
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+        }
+    }
+    window.onload = function carga() {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            var valor = cookie.substring(eqPos + 1);
+            if (parseInt(name) == 5) {
+                document.getElementById(parseInt(name)).textContent = valor;
+                document.getElementById(6).value = valor;
+            } else {
+                document.getElementById(parseInt(name)).value = valor;
+            }
+            
+        }
+    }
 
-<h1>Create</h1>
+</script>
+<h1>Añadir una pelicula</h1>
 
-<h4>Pelicula</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" onsubmit="clearData()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
+                <label asp-for="pelicula.Titulo" class="control-label"></label>
+                <input asp-for="pelicula.Titulo" id="1" onchange="guardarCambio(this)" class="form-control" />
+                <span asp-validation-for="pelicula.Titulo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FechaLanzamiento" class="control-label"></label>
-                <input asp-for="FechaLanzamiento" class="form-control" />
-                <span asp-validation-for="FechaLanzamiento" class="text-danger"></span>
+                <label asp-for="pelicula.FechaLanzamiento" class="control-label"></label>
+                <input asp-for="pelicula.FechaLanzamiento" id="2" onchange="guardarCambio(this)" class="form-control" />
+                <span asp-validation-for="pelicula.FechaLanzamiento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
-                <span asp-validation-for="Precio" class="text-danger"></span>
+                <label asp-for="pelicula.Precio" class="control-label"></label>
+                <input asp-for="pelicula.Precio" id="3" onchange="guardarCambio(this)" class="form-control" />
+                <span asp-validation-for="pelicula.Precio" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Portada" class="control-label"></label>
-                <input asp-for="Portada" class="form-control" />
-                <span asp-validation-for="Portada" class="text-danger"></span>
+                <div class="custom-file">
+                    <input type="file" id="4" onchange="guardarCambio(this)" class="form-control custom-file-input" />
+                    <label asp-for="pelicula.Portada" class="custom-file-label control-label" id="5" for="customFile" data-browse="Buscar portada">No seleccionó archivo</label>
+                </div>
+                <input type="hidden" asp-for="pelicula.Portada" id="6" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-outline-info" asp-controller="Peliculas" asp-action="selectCompañia">Seleccionar compañia</a>
+                @if (Model != null)
+                {
+                    if (Model.compañia != null)
+                    {
+                        if (!String.IsNullOrEmpty(Model.compañia.Nombre))
+                        {
+                            <input type="hidden" name="@Model.compañia.Id" />
+                            <label class="control-label">Compañia: @Model.compañia.Nombre</label>
+                        }
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Añadir" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a onclick="clearData()" class="btn btn-outline-info" asp-action="Index">Regresar a la lista</a>
 </div>
 

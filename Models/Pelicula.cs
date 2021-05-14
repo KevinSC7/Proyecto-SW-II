@@ -23,5 +23,7 @@ namespace Proyecto_SW_II.Models
         public decimal Precio { get; set; }
 
         public string Portada { get; set; }
+
+        public Compañia compañia { get; set; }
     }
 }
