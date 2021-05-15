@@ -28,6 +28,15 @@ namespace Proyecto_SW_II.Controllers
             return false;
         }
 
+        public Boolean isClient()
+        {
+            if (HttpContext.Session.GetString("TipoUsuario") == null) return false;
+            if (HttpContext.Session.GetString("TipoUsuario") == "Cliente") return true;
+            if (HttpContext.Session.GetString("TipoUsuario") == "Administrador") return false;
+            return false;
+
+        }
+
         // GET: Peliculas
         public async Task<IActionResult> Index(string serachbyname, string searchbycategory, string searchbydate, string searchbycompany)
         {
@@ -163,6 +172,10 @@ namespace Proyecto_SW_II.Controllers
                 }
                 pelicula.compañia = c;
             }
+            if (String.IsNullOrEmpty(pelicula.Portada))
+            {
+                pelicula.Portada = "portada_no_disponible.jpg";
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -214,6 +227,12 @@ namespace Proyecto_SW_II.Controllers
             _context.Peliculas.Remove(pelicula);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> explorar(string search)
+        {
+            if (!isClient()) return NotFound();
+            return View(await _context.Peliculas.Include(c => c.compañia).ToListAsync());
         }
 
         private bool PeliculaExists(int id)
