@@ -13,7 +13,7 @@ namespace Proyecto_SW_II.Models
         public int Id { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
-        public int Pago { get; set; }
+        public decimal Pago { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -26,5 +26,7 @@ namespace Proyecto_SW_II.Models
         public Compañia compañia { get; set; }
 
         public Cuenta cuenta { get; set; }
+
+        public Pelicula pelicula { get; set; }
     }
 }

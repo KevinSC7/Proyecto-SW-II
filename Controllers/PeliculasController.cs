@@ -124,6 +124,18 @@ namespace Proyecto_SW_II.Controllers
             return View(await cc.getLista());
         }
 
+        public async Task<IActionResult> ExplorerDetails(int? id, string text)
+        {
+            if (!isClient()) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var pelicula = await _context.Peliculas.Include(x => x.compañia).FirstOrDefaultAsync(i => i.Id == id);
+            if (!string.IsNullOrEmpty(text)) ViewData["alquilada"] = text;
+            return View(pelicula);
+        }
+
         // GET: Peliculas/Edit/5
         public async Task<IActionResult> Edit(int? id, int? idcompañia)
         {
