@@ -70,6 +70,7 @@ namespace Proyecto_SW_II.Controllers
 
         public async Task<IActionResult> selectCompañia()
         {
+            if (!acceso()) return NotFound();
             CompañiaController cc = new CompañiaController(_context);
             return View(await cc.getLista());
         }
@@ -94,10 +95,15 @@ namespace Proyecto_SW_II.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Pelicula pelicula, Compañia compañia)
         {
-            if(compañia != null)
+            if(_context.Compañias.Where(c => c.Id == compañia.Id).Any())
             {
                 var c = _context.Compañias.Where(n => n.Id == compañia.Id).First();
                 pelicula.compañia = c;
+            }
+            else
+            {
+                ViewData["compa"] = "Debe escoger una compañia";
+                return View(new IntermedioPeliculaCompañia(pelicula, null));
             }
             
             
@@ -119,6 +125,7 @@ namespace Proyecto_SW_II.Controllers
 
         public async Task<IActionResult> vincularCompañia(int? id)
         {
+            if (!acceso()) return NotFound();
             CompañiaController cc = new CompañiaController(_context);
             ViewBag.idpeli = id;
             return View(await cc.getLista());

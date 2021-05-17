@@ -52,6 +52,21 @@ namespace Proyecto_SW_II.Controllers
             return NotFound();
         }
 
+        public async Task<IActionResult> IndexClient()
+        {
+            if (!isClient()) return NotFound();
+            var id = HttpContext.Session.GetInt32("ID");
+            if (id != null)
+            {
+                return View(await _context.Alquileres.
+                    Include(a => a.cuenta).
+                    Include(a => a.compañia).
+                    Include(a => a.pelicula).
+                    Where(c => c.cuenta.Id == id).ToListAsync());
+            }
+            return NotFound();
+        }
+
         public IActionResult DetailsCliente(int? id)
         {
             if (!isClient()) return NotFound();
@@ -125,6 +140,7 @@ namespace Proyecto_SW_II.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!acceso()) return NotFound();
             var alquiler = await _context.Alquileres.FindAsync(id);
             _context.Alquileres.Remove(alquiler);
             await _context.SaveChangesAsync();
