@@ -38,18 +38,106 @@ namespace Proyecto_SW_II.Controllers
         }
 
         // GET: Alquilers
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(string searchcompañia, string searchcuenta, string searchpel)
         {
             if (!acceso()) return NotFound();
-            if(id != null)
+            if(!String.IsNullOrEmpty(searchcompañia) && !String.IsNullOrEmpty(searchcuenta))
             {
-                return View(await _context.Alquileres.
+                var list = await _context.Alquileres.
                     Include(a => a.cuenta).
                     Include(a => a.compañia).
                     Include(a => a.pelicula).
-                    Where(c => c.cuenta.Id == id).ToListAsync());
+                    Where(c => c.compañia.Nombre == searchcompañia && c.cuenta.Nombre == searchcuenta).ToListAsync();
+                if (list.Any())
+                {
+                    ViewData["searchcuenta"] = searchcuenta;
+                    ViewData["searchcompañia"] = searchcompañia;
+                    decimal suma = 0;
+                    foreach (var item in list)
+                    {
+                        suma += item.Pago;
+                    }
+                    ViewBag.todas = suma;
+                }
+                else
+                {
+                    ViewData["errorcc"] = "No se encontraron coincidencias, ¿Ha escrito EXACTAMENTE los nombres?";
+                }
+                return View(list);
             }
-            return NotFound();
+            else if(!String.IsNullOrEmpty(searchcompañia) && String.IsNullOrEmpty(searchcuenta))
+            {
+                var list = await _context.Alquileres.
+                    Include(a => a.cuenta).
+                    Include(a => a.compañia).
+                    Include(a => a.pelicula).
+                    Where(c => c.compañia.Nombre == searchcompañia).ToListAsync();
+                if (list.Any())
+                {
+                    ViewData["searchcompañia"] = searchcompañia;
+                    decimal suma = 0;
+                    foreach (var item in list)
+                    {
+                        suma += item.Pago;
+                    }
+                    ViewBag.sumacompañia = suma;
+                }
+                else
+                {
+                    ViewData["errorcc"] = "No se encontraron coincidencias, ¿Ha escrito EXACTAMENTE el nombre?";
+                }
+                return View(list);
+            }
+            else if (String.IsNullOrEmpty(searchcompañia) && !String.IsNullOrEmpty(searchcuenta))
+            {
+                var list = await _context.Alquileres.
+                    Include(a => a.cuenta).
+                    Include(a => a.compañia).
+                    Include(a => a.pelicula).
+                    Where(c => c.cuenta.Nombre == searchcuenta).ToListAsync();
+                if (list.Any())
+                {
+                    ViewData["searchcuenta"] = searchcuenta;
+                    decimal suma = 0;
+                    foreach (var item in list)
+                    {
+                        suma += item.Pago;
+                    }
+                    ViewBag.sumacuenta = suma;
+                }
+                else
+                {
+                    ViewData["errorcc"] = "No se encontraron coincidencias, ¿Ha escrito EXACTAMENTE el nombre?";
+                }
+                return View(list);
+            }
+            else if (!String.IsNullOrEmpty(searchpel))
+            {
+                var list = await _context.Alquileres.
+                    Include(a => a.cuenta).
+                    Include(a => a.compañia).
+                    Include(a => a.pelicula).
+                    Where(p => p.pelicula.Titulo == searchpel).ToListAsync();
+                if (list.Any())
+                {
+                    decimal suma = 0;
+                    foreach(var item in list)
+                    {
+                        suma += item.Pago;
+                    }
+                    ViewBag.sumapeli = suma;
+                }
+                else
+                {
+                    ViewData["errorp"] = "No se encontraron coincidencias, ¿Ha escrito EXACTAMENTE el nombre?";
+                }
+                return View(list);
+            }
+            return View(await _context.Alquileres.
+                    Include(a => a.cuenta).
+                    Include(a => a.compañia).
+                    Include(a => a.pelicula).
+                    ToListAsync());
         }
 
         public async Task<IActionResult> IndexClient()
