@@ -154,6 +154,11 @@ namespace Proyecto_SW_II.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var categoria = await _context.Categorias.FindAsync(id);
+            var relaciones = await _context.RelacionesCategoriaPelicula.Where(c => c.categoria == categoria).ToListAsync();
+            foreach(var r in relaciones)
+            {
+                _context.RelacionesCategoriaPelicula.Remove(r);
+            }
             _context.Categorias.Remove(categoria);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

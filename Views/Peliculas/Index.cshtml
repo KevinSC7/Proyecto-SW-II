@@ -49,9 +49,10 @@
                 @Html.DisplayFor(modelItem => item.compañia.Nombre)
             </td>
             <td>
-                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn btn-outline-danger" style="padding: 4px;" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Edit" asp-route-id="@item.Id">Modificar</a>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-controller="CategoriaPeliculas" asp-action="AsignarCategoria" asp-route-id="@item.Id">Vincular Categorías</a>
+                <a class="btn btn-outline-danger" style="padding: 4px;" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }
