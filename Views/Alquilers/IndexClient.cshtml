@@ -12,27 +12,31 @@
             @for (int j = 0; j < 3; j++)
             {
                 if (i >= Model.Count) break;
-            <div class="col-sm-4 text-center border border-dark" style="padding: 12px;">
-                <div class="row">
-                    <div class="col">
-                        @if (Model.ElementAt(i).pelicula.Portada.Equals("portada_no_disponible.jpg"))
-                        {
-                            <img src="~/Images/portada_no_disponible.jpg" alt="No disponible" style="max-width:200px; max-height: 400px;" />
-                        }
-                        else
-                        {
-                            string path = Url.Content("~/Images/" + Model.ElementAt(i).pelicula.Portada);
-                            <img src="@path" style="max-width:200px; max-height: 400px;" />
-                        }
-                    </div>
+                if (Model.ElementAt(i).FechaFin.CompareTo(DateTime.Now) > 0)
+                {
+                    i++;
+                }
+                if (i >= Model.Count) break;
+            <div class="col-sm-4 border border-dark d-flex align-items-center flex-column" style="padding: 12px;">
+                <div class="mb-auto p-2">
+                    @if (Model.ElementAt(i).pelicula.Portada.Equals("portada_no_disponible.jpg"))
+                    {
+                        <img src="~/Images/portada_no_disponible.jpg" alt="No disponible" style="max-width:200px; max-height: 400px;" />
+                    }
+                    else
+                    {
+                        string path = Url.Content("~/Images/" + Model.ElementAt(i).pelicula.Portada);
+                        <img src="@path" style="max-width:200px; max-height: 400px;" />
+                    }
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <h2>@Model.ElementAt(i).pelicula.Titulo</h2>
-                    </div> 
+                <div class="p-2">
+                    <h2>@Model.ElementAt(i).pelicula.Titulo</h2>
                 </div>
-                <a class="btn btn-success" asp-action="??" asp-route-id="@Model.ElementAt(i).pelicula.Id">Ver Pelicula</a>
+                <div class="p-2">
+                    <a class="btn btn-success" asp-action="??" asp-route-id="@Model.ElementAt(i).pelicula.Id">Ver Pelicula</a>
+                </div>
             </div>
+
                 i++;
             }
         </div>

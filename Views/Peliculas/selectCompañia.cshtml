@@ -5,6 +5,20 @@
 }
 
 <h1>Seleccionar una compañia para la pelicula</h1>
+<br />
+<div class="container" style="width:50%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Peliculas" asp-action="selectCompañia">
+        <div class="row flex-nowrap">
+            <div class="col-md-6 my-auto">
+                <div class="input-group flex-nowrap">
+                    <input type="text" name="searchString" class="form-control" placeholder="Search" />
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>

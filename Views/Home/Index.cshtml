@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@model ICollection<Proyecto_SW_II.Models.Pelicula>
+@using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Home Page";
@@ -49,16 +50,43 @@
         </a>
     </div>
     <div>
-        <h1>Descuentos en peliculas esta semana</h1>
-    </div>
-    <div>
-        @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
+        <h1>Peliculas de esta semana</h1>
+        @if(!Model.Count.Equals(0))
         {
-            <p>miLista(del usuario @HttpContextAccessor.HttpContext.Session.Id)</p>
+            <div class="column" style="padding-right: 20px;">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="row" style="background-color: #a1cb58;">
+                        @for (int j = 0; j < 3; j++)
+                        {
+                            if (i >= Model.Count()) break;
+                            <div class="col-sm-4 border border-dark d-flex align-items-center flex-column" style="padding: 12px;">
+                                <div class="mb-auto p-2">
+                                    @if (Model.ElementAt(i).Portada.Equals("portada_no_disponible.jpg"))
+                                    {
+                                        <img src="~/Images/portada_no_disponible.jpg" alt="No disponible" style="max-width:200px; max-height: 400px;" />
+                                    }
+                                    else
+                                    {
+                                        string path = Url.Content("~/Images/" + Model.ElementAt(i).Portada);
+                                        <img src="@path" style="max-width:200px; max-height: 400px;" />
+                                    }
+                                </div>
+                                <div class="p-2">
+                                    <h2>@Model.ElementAt(i).Titulo</h2>
+                                </div>
+                            </div>
+                            i++;
+                        }
+                    </div>
+                    i--;
+                }
+            </div>
         }
         else
         {
-            <p>No hay lista</p>
+            <p style="font-size: 24px">No hay peliculas destacadas esta semana</p>
         }
-    </div><br />
+    </div>
+    <br /><br /><br /><hr />
 </body>

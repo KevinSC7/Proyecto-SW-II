@@ -13,12 +13,15 @@ namespace Proyecto_SW_II.Models
 
         public List<Categoria> noasignadas { get; set; }
 
+        public List<Categoria> todas { get; set; }
+
         public IntermedioCategoriasRelaciones(List<Categoria> lc, List<CategoriaPelicula> r, int id)
         {
             bool exist;
             asignadas = new List<Categoria>();
             noasignadas = new List<Categoria>();
-            foreach(var cat in lc)
+            todas = new List<Categoria>();
+            foreach (var cat in lc)
             {
                 exist = false;
                 foreach (var rel in r)
@@ -31,6 +34,7 @@ namespace Proyecto_SW_II.Models
                     }
                 }
                 if (exist == false) noasignadas.Add(cat);
+                todas.Add(cat);
             }
             idpeli = id;
         }

@@ -26,7 +26,9 @@ namespace Proyecto_SW_II.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var l = _context.Peliculas.Where(p => p.FechaLanzamiento.CompareTo(DateTime.Now.AddDays(-7)) >= 0).ToList();
+
+            return View(l);
         }
 
         public IActionResult Registro()

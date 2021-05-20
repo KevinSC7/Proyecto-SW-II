@@ -29,9 +29,13 @@ namespace Proyecto_SW_II.Controllers
         }
 
         // GET: Categorias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             if (!acceso()) return NotFound();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                return View(await _context.Categorias.Where(c => c.Nombre.Contains(searchString)).ToListAsync());
+            }
             return View(await _context.Categorias.ToListAsync());
         }
 

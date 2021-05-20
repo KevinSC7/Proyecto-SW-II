@@ -35,6 +35,11 @@ namespace Proyecto_SW_II.Controllers
         {
             return await _context.Compañias.ToListAsync();
         }
+
+        public async Task<List<Compañia>> getLista(string search)
+        {
+            return await _context.Compañias.Where(n => n.Nombre.Contains(search)).ToListAsync();
+        }
         // GET: Compañia
         public async Task<IActionResult> Index(string searchString)
         {         

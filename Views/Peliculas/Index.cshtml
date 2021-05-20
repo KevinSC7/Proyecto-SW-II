@@ -3,9 +3,49 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<script type="text/javascript">
+    function only(object) {
+        var mytext = object.value;
+        var inputs = document.getElementsByTagName('input');
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type.toLowerCase() == 'text') {
+                inputs[i].value="";
+            }
+        }
+        object.value = mytext;
+    }
+</script>
 <h1>Listado de películas</h1>
-
+<div class="container" style="width:100%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Peliculas" asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-4 my-auto">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la pelicula </p>
+                    <input type="text" name="searchpel" onchange="only(this)" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la categoría </p>
+                    <input type="text" name="searchcat" onchange="only(this)" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la compañia </p>
+                    <input type="text" name="searchcompañia" onchange="only(this)" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<br /><br /><hr />
 <p>
     <a class="btn btn-outline-info" asp-action="Create">Añadir película</a>
 </p>
