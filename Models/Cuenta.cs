@@ -22,6 +22,18 @@ namespace Proyecto_SW_II.Models
         [Display(Name = "Contraseña")]
         public string Contraseña { get; set; }
 
+        [Required]
+        [StringLength(24, ErrorMessage = "Cuenta errónea", MinimumLength = 24)]
+        public string cuentaBancaria { get; set; }
+
+        public const string EmailValidationRegEx = @"^\s*\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*\s*$";
+
+        [Required]
+        [RegularExpression(EmailValidationRegEx, ErrorMessage = "Email incorrecto")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string Email { get; set; }
+
         public bool Estado = true;
         public Boolean _Estado
         {
