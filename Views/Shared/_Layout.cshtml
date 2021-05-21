@@ -21,7 +21,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse flex-nowrap">
-                    <ul class="nav nav-tabs flex-nowrap">
+                    <ul class="nav nav-tabs flex-nowrap mr-auto">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -41,14 +41,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Compañia" asp-action="Index">Gestion Compañias</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Alquilers" asp-action="Index">Contabilidad</a>
+                                </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">MiLista</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Alquilers" asp-action="IndexClient">MiLista</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Explorar peliculas</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Peliculas" asp-action="explorar">Explorar peliculas</a>
                                 </li>
                             }
                         }
@@ -56,7 +59,7 @@
                 </div>
             </div>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse flex-nowrap">
-                <ul class="navbar-nav flex-grow-1 flex-nowrap">
+                <ul class="navbar-nav flex-grow-1 flex-nowrap mr-auto">
                     @if (HttpContextAccessor.HttpContext.Session.GetString("NombreSession") != null)
                     {
                         <li class="nav-item" style="padding: 4px;">

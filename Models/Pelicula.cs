@@ -22,6 +22,8 @@ namespace Proyecto_SW_II.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Precio { get; set; }
 
-        public Uri Portada { get; set; }
+        public string Portada { get; set; }
+
+        public Compañia compañia { get; set; }
     }
 }

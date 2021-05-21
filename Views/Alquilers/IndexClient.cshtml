@@ -1,0 +1,48 @@
+﻿@model ICollection<Proyecto_SW_II.Models.Alquiler>
+@{
+    ViewData["Title"] = "IndexClient";
+}
+
+<h1>Mi lista</h1>
+<hr />
+<body style="background-color:#5cb85c">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="row" style="background-color: #a1cb58;">
+            @for (int j = 0; j < 3; j++)
+            {
+                if (i >= Model.Count) break;
+                if (Model.ElementAt(i).FechaFin.CompareTo(DateTime.Now) > 0)
+                {
+                    i++;
+                }
+                if (i >= Model.Count) break;
+            <div class="col-sm-4 border border-dark d-flex align-items-center flex-column" style="padding: 12px;">
+                <div class="mb-auto p-2">
+                    @if (Model.ElementAt(i).pelicula.Portada.Equals("portada_no_disponible.jpg"))
+                    {
+                        <img src="~/Images/portada_no_disponible.jpg" alt="No disponible" style="max-width:200px; max-height: 400px;" />
+                    }
+                    else
+                    {
+                        string path = Url.Content("~/Images/" + Model.ElementAt(i).pelicula.Portada);
+                        <img src="@path" style="max-width:200px; max-height: 400px;" />
+                    }
+                </div>
+                <div class="p-2">
+                    <h2>@Model.ElementAt(i).pelicula.Titulo</h2>
+                </div>
+                <div class="p-2">
+                    <a class="btn btn-success" asp-action="??" asp-route-id="@Model.ElementAt(i).pelicula.Id">Ver Pelicula</a>
+                </div>
+            </div>
+
+                i++;
+            }
+        </div>
+        i--;
+    }
+    <h2 class="text-center"><b>Has llegado al final de la lista</b></h2>
+</body>
+
+<hr />

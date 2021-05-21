@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proyecto_SW_II.Data;
 
 namespace Proyecto_SW_II.Migrations
 {
     [DbContext(typeof(AplicationDBContext))]
-    partial class AplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210513190215_UpdatePeliculaAlquiler")]
+    partial class UpdatePeliculaAlquiler
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,16 +43,11 @@ namespace Proyecto_SW_II.Migrations
                     b.Property<int?>("cuentaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("peliculaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("compañiaId");
 
                     b.HasIndex("cuentaId");
-
-                    b.HasIndex("peliculaId");
 
                     b.ToTable("Alquileres");
                 });
@@ -78,17 +75,7 @@ namespace Proyecto_SW_II.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("categoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("peliculaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("categoriaId");
-
-                    b.HasIndex("peliculaId");
 
                     b.ToTable("RelacionesCategoriaPelicula");
                 });
@@ -121,10 +108,6 @@ namespace Proyecto_SW_II.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("MiusuarioId")
                         .HasColumnType("int");
 
@@ -134,11 +117,6 @@ namespace Proyecto_SW_II.Migrations
 
                     b.Property<bool>("_Estado")
                         .HasColumnType("bit");
-
-                    b.Property<string>("cuentaBancaria")
-                        .IsRequired()
-                        .HasMaxLength(24)
-                        .HasColumnType("nvarchar(24)");
 
                     b.HasKey("Id");
 
@@ -254,30 +232,9 @@ namespace Proyecto_SW_II.Migrations
                         .WithMany()
                         .HasForeignKey("cuentaId");
 
-                    b.HasOne("Proyecto_SW_II.Models.Pelicula", "pelicula")
-                        .WithMany()
-                        .HasForeignKey("peliculaId");
-
                     b.Navigation("compañia");
 
                     b.Navigation("cuenta");
-
-                    b.Navigation("pelicula");
-                });
-
-            modelBuilder.Entity("Proyecto_SW_II.Models.CategoriaPelicula", b =>
-                {
-                    b.HasOne("Proyecto_SW_II.Models.Categoria", "categoria")
-                        .WithMany()
-                        .HasForeignKey("categoriaId");
-
-                    b.HasOne("Proyecto_SW_II.Models.Pelicula", "pelicula")
-                        .WithMany()
-                        .HasForeignKey("peliculaId");
-
-                    b.Navigation("categoria");
-
-                    b.Navigation("pelicula");
                 });
 
             modelBuilder.Entity("Proyecto_SW_II.Models.Cuenta", b =>

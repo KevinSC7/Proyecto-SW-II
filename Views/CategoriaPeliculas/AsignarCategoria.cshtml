@@ -1,0 +1,63 @@
+﻿@model Proyecto_SW_II.Models.IntermedioCategoriasRelaciones
+
+@{
+    ViewData["Title"] = "AsignarCategoria";
+}
+
+<h1>Lista de categorías asignadas y no asignadas</h1>
+
+<div class="container" style="width:50%;background-color:InfoBackground;float:left;">
+    <form asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-6 my-auto">
+                <div class="input-group flex-nowrap">
+                    <input type="hidden" name="idpeli" value="@Model.idpeli" />
+                    <input type="text" name="searchString" class="form-control" placeholder="Search" />
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Label("Categorias")
+            </th>
+            <th>
+                @Html.Label("Asignadas/No asignadas")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.asignadas)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelitem => item.Nombre)
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger" asp-controller="CategoriaPeliculas" asp-action="QuitarCategoria" asp-route-idcat="@item.Id" asp-route-idpel="@Model.idpeli">Quitar</a>
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model.noasignadas)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelitem => item.Nombre)
+                </td>
+                <td>
+                    <a class="btn btn-outline-info" asp-controller="CategoriaPeliculas" asp-action="Create" asp-route-idcat="@item.Id" asp-route-idpel="@Model.idpeli">Asignar</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<div>
+    <a class="btn btn-outline-info" style="padding: 4px;" asp-controller="Peliculas" asp-action="Index">Regresar a la lista de peliculas</a>
+</div>

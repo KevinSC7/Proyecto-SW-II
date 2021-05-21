@@ -26,7 +26,9 @@ namespace Proyecto_SW_II.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var l = _context.Peliculas.Where(p => p.FechaLanzamiento.CompareTo(DateTime.Now.AddDays(-7)) >= 0).ToList();
+
+            return View(l);
         }
 
         public IActionResult Registro()
@@ -36,9 +38,14 @@ namespace Proyecto_SW_II.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(Usuario usuario, Cuenta cuenta, string retype)
+        public async Task<IActionResult> Registro(Usuario usuario, Cuenta cuenta, string retype, string terminos)
         {
             IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
+            if (String.IsNullOrEmpty(terminos))
+            {
+                ViewData["terminos"] = "No ha aceptado los terminos";
+                return View(datos);
+            }
             if (cuenta.Contraseña != retype)
             {
                 ViewData["retype"] = "Retype incorrecto";
@@ -162,9 +169,14 @@ namespace Proyecto_SW_II.Controllers
         ////No puedes llamar a los controller de usuario ni cuenta, no actualiza bien, el StateModel cambia
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MisDatos(Usuario usuario, Cuenta cuenta, string psw, string retype, string retypenuevapsw, string nuevapsw)
+        public async Task<IActionResult> MisDatos(Usuario usuario, Cuenta cuenta, string psw, string retype, string retypenuevapsw, string nuevapsw, string terminos)
         {
             IntermedioCuentaUsuarioRol datos = new IntermedioCuentaUsuarioRol(usuario, cuenta, null);
+            if (String.IsNullOrEmpty(terminos))
+            {
+                ViewData["terminos"] = "No ha aceptado los terminos";
+                return View(datos);
+            }
 
             if (!String.IsNullOrEmpty(nuevapsw))
             {

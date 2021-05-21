@@ -1,0 +1,57 @@
+﻿@model Proyecto_SW_II.Models.Pelicula
+
+@{
+    ViewData["Title"] = "explorer details";
+}
+<body style="background-color:#5cb85c">
+    <hr />
+    <div class="row m-auto">
+        <div class="col-md-4 text-center border border-dark"  style="background-color: #a1cb58;">
+            <img src="@Url.Content("~/Images/" + Model.Portada)" style="max-width:200px; max-height: 400px;" />
+        </div>
+        <div class="col-md-4 text-left border border-dark" style="background-color: #a1cb58;">
+            <br />
+            <br />
+            <form asp-action="Create" asp-controller="Alquilers">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" id="1" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Titulo" class="control-label"><b>@Model.Titulo</b></label>
+                    <input type="hidden" asp-for="Titulo" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="FechaLanzamiento" class="control-label"><b>Estreno:</b> @Model.FechaLanzamiento.Year</label>
+                    <input type="hidden" asp-for="FechaLanzamiento" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Precio" class="control-label"><b>Precio:</b> @Model.Precio €</label>
+                    <input type="hidden" asp-for="Precio" class="form-control" />
+                </div>
+                <div class="form-group">
+                    @if (Model != null)
+                    {
+                        if (Model.compañia != null)
+                        {
+                            if (!String.IsNullOrEmpty(Model.compañia.Nombre))
+                            {
+                                <input type="hidden" name="compañia" value="@Model.compañia.Id" />
+                                <label class="control-label"><b>Compañia:</b> @Model.compañia.Nombre</label>
+                            }
+                        }
+                    }
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Alquilar" style="padding:4px;" class="btn btn-warning" />
+                    <a class="btn btn-info" style="padding:4px;" asp-action="explorar">Regresar a la lista</a>
+                </div>
+                @if (ViewData["alquilada"] != null)
+                {
+                    <div>
+                        <p class="text-danger">@ViewData["alquilada"].ToString()</p>
+                    </div>
+                }
+
+            </form>
+        </div>
+    </div>
+</body>

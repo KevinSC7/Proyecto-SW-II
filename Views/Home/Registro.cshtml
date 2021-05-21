@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Registro";
 }
-
 <h1>@ViewData["Title"]</h1>
 
 <h4>Crear una cuenta</h4>
@@ -82,6 +81,13 @@
                 <span asp-validation-for="cuenta.Nombre" class="text-danger"></span>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="cuenta.Email" class="control-label"></label>
+                <input type="email" asp-for="cuenta.Email" placeholder="example@gmail.com" class="form-control" />
+                <span asp-validation-for="cuenta.Email" class="text-danger"></span>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-4">
@@ -94,18 +100,34 @@
                 <label class="control-label">Retype</label>
                 <input type="password" name="retype" class="form-control" />
                 <span asp-validation-for="cuenta.Contraseña" class="text-danger"></span>
-                @if(ViewData["retype"] != null)
+                @if (ViewData["retype"] != null)
                 {
                     <span class="text-danger">@ViewData["retype"].ToString()</span>
                 }
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Registrarse" class="btn btn-outline-primary" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="cuenta.cuentaBancaria" class="control-label">Nº de cuenta bancaria</label>
+                <input asp-for="cuenta.cuentaBancaria" placeholder="ESXX XXXX XXXX XX XXXXXXXXXX" class="form-control" />
+                <span asp-validation-for="cuenta.cuentaBancaria" class="text-danger"></span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <label><input type="checkbox" name="terminos" /> Acepto los terminos y condiciones</label>
+                @if(ViewData["terminos"] != null)
+                {
+            <span class="text-danger">@ViewData["terminos"].ToString()</span>
+                }
+                
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-controller="Home" asp-action="Index">Volver a inicio</a>
+    <a class="btn btn-outline-info" asp-controller="Home" asp-action="Index">Volver a inicio</a>
 </div>

@@ -4,11 +4,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Lista de categorías</h1>
+<div class="container" style="width:50%;background-color:InfoBackground;float:left;">
+    <form asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-6 my-auto">
+                <div class="input-group flex-nowrap">
+                    <input type="hidden" name="idpeli" value="@ViewBag.idpeli" />
+                    <input type="text" name="searchString" class="form-control" placeholder="Search" />
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+            <div class="col-md-6 my-auto">
+                <a class="btn btn-outline-info" asp-action="Create">Añadir</a>
+            </div>
+        </div>
+    </form>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -25,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-outline-info" style="padding:4px;" asp-action="Edit" asp-route-id="@item.Id">Modificar</a>
+                <a class="btn btn-outline-info" style="padding:4px;" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                <a class="btn btn-outline-danger" style="padding:4px;" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

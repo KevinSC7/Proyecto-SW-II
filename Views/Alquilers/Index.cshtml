@@ -4,16 +4,106 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Pagos</h1>
+<hr />
+<div class="container" style="width:100%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Alquilers" asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-4 my-auto">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la compañia </p>
+                    <input type="text" name="searchcompañia" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la cuenta </p>
+                    <input type="text" name="searchcuenta" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        @if (ViewBag.sumacuenta != null && ViewData["searchcuenta"] != null)
+        {
+            <div class="col">
+                <p>La cuenta @ViewData["searchcuenta"].ToString() se ha gastado @ViewBag.sumacuenta €</p>
+            </div>
+        }
+        else if (ViewBag.sumacompañia != null && ViewData["searchcompañia"] != null)
+        {
+            <div class="col">
+                <p>La compañia @ViewData["searchcompañia"].ToString() ha generado @ViewBag.sumacompañia €</p>
+            </div>
+        }
+        else if (ViewBag.todas != null && ViewData["searchcompañia"] != null && ViewData["searchcuenta"] != null)
+        {
+            <div class="col">
+                <p>Los pagos de @ViewData["searchcuenta"].ToString() a @ViewData["searchcompañia"].ToString() suman la cantidad de @ViewBag.todas €</p>
+            </div>
+        }
+        else if (ViewData["errorcc"] != null)
+        {
+            <div class="col">
+                <p class="text-danger">@ViewData["errorcc"]</p>
+            </div>
+        }
+    </div>
+</div>
+<br /><br />
+<div class="container" style="width:100%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Alquilers" asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-4 my-auto">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la pelicula </p>
+                    <input type="text" name="searchpel" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        @if (ViewBag.sumapeli != null)
+        {
+            <div class="col">
+                <p>La pelicula filtrada suma la catidad de @ViewBag.sumapeli €</p>
+            </div>
+        }
+        else if (ViewData["errorp"] != null)
+        {
+            <div class="col">
+                <p class="text-danger">@ViewData["errorp"]</p>
+            </div>
+        }
+    </div>
+</div>
+<br />
+<hr />
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Pago)
+                @Html.DisplayNameFor(model => model.pelicula.Titulo)
+            </th>
+            <th>
+                Pago de 'Nombre de la cuenta'
+            </th>
+            <th>
+                a 'Nombre de la compañia'
+            </th>
+            <th>
+                Cantidad
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaComienzo)
@@ -28,7 +118,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Pago)
+                @Html.DisplayFor(modelItem => item.pelicula.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cuenta.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.compañia.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pago) €
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaComienzo)
@@ -36,12 +135,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FechaFin)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
         </tr>
 }
     </tbody>
 </table>
+

@@ -3,11 +3,51 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
+<script type="text/javascript">
+    function only(object) {
+        var mytext = object.value;
+        var inputs = document.getElementsByTagName('input');
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type.toLowerCase() == 'text') {
+                inputs[i].value="";
+            }
+        }
+        object.value = mytext;
+    }
+</script>
+<h1>Listado de películas</h1>
+<div class="container" style="width:100%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Peliculas" asp-action="Index">
+        <div class="row flex-nowrap">
+            <div class="col-md-4 my-auto">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la pelicula </p>
+                    <input type="text" name="searchpel" onchange="only(this)" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la categoría </p>
+                    <input type="text" name="searchcat" onchange="only(this)" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <p class="my-auto">Nombre de la compañia </p>
+                    <input type="text" name="searchcompañia" onchange="only(this)" class="form-control" placeholder="search" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group flex-nowrap">
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<br /><br /><hr />
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-outline-info" asp-action="Create">Añadir película</a>
 </p>
 <table class="table">
     <thead>
@@ -24,6 +64,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Portada)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.compañia.Nombre)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,15 +80,19 @@
                 @Html.DisplayFor(modelItem => item.FechaLanzamiento)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Precio)
+                @Html.DisplayFor(modelItem => item.Precio)€
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Portada)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.compañia.Nombre)
+            </td>
+            <td>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Edit" asp-route-id="@item.Id">Modificar</a>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                <a class="btn btn-outline-info" style="padding: 4px;" asp-controller="CategoriaPeliculas" asp-action="AsignarCategoria" asp-route-id="@item.Id">Vincular Categorías</a>
+                <a class="btn btn-outline-danger" style="padding: 4px;" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

@@ -72,10 +72,10 @@
             </div>
         </div>
     </div>
+    <p>(Si se deja vacio -> se deja como está la contraseña)</p>
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
-                <p>(Vacio -> se deja como está)</p>
                 <label class="control-label">Nueva contraseña</label>
                 <input name="nuevapsw" class="form-control" />
                 @if (ViewData["nuevapsw"] != null)
@@ -92,6 +92,27 @@
                 }
             </div>
         </div>
+        <div class="col-md-6">
+            
+            <div class="form-group">
+                <label asp-for="cuenta.Email" class="control-label"></label>
+                <input type="email" asp-for="cuenta.Email" placeholder="example@gmail.com" class="form-control" />
+                <span asp-validation-for="cuenta.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="cuenta.cuentaBancaria" class="control-label">Nº de cuenta bancaria</label>
+                <input asp-for="cuenta.cuentaBancaria" placeholder="ESXX XXXX XXXX XX XXXXXXXXXX" class="form-control" />
+                <span asp-validation-for="cuenta.cuentaBancaria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" name="terminos" /> Acepto los terminos y condiciones</label>
+                @if (ViewData["terminos"] != null)
+                {
+                    <span class="text-danger">@ViewData["terminos"].ToString()</span>
+                }
+
+            </div>
+        </div>
     </div>
     <hr />
     <b>Para confirmar los cambios introduzca:</b><br />
@@ -105,7 +126,7 @@
                 {
                     <span class="text-danger">@ViewData["psw"].ToString()</span>
                 }
-                
+
             </div>
             <div class="form-group">
                 <label class="control-label">Retype</label>

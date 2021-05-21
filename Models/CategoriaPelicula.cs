@@ -11,5 +11,9 @@ namespace Proyecto_SW_II.Models
         [Key]
         public int Id { get; set; }
 
+        public Categoria categoria { get; set; }
+
+        public Pelicula pelicula { get; set; }
+
     }
 }

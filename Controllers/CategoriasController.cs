@@ -29,9 +29,13 @@ namespace Proyecto_SW_II.Controllers
         }
 
         // GET: Categorias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             if (!acceso()) return NotFound();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                return View(await _context.Categorias.Where(c => c.Nombre.Contains(searchString)).ToListAsync());
+            }
             return View(await _context.Categorias.ToListAsync());
         }
 
@@ -154,6 +158,11 @@ namespace Proyecto_SW_II.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var categoria = await _context.Categorias.FindAsync(id);
+            var relaciones = await _context.RelacionesCategoriaPelicula.Where(c => c.categoria == categoria).ToListAsync();
+            foreach(var r in relaciones)
+            {
+                _context.RelacionesCategoriaPelicula.Remove(r);
+            }
             _context.Categorias.Remove(categoria);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

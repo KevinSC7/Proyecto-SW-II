@@ -1,0 +1,95 @@
+﻿@model ICollection<Proyecto_SW_II.Models.Pelicula>
+
+@{
+    ViewData["Title"] = "explorar";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+    .cate{
+        color: white;
+    }
+    .cate:hover{
+        color: white;
+        background-color: black;
+    }
+</style>
+<h1>Explorar peliculas</h1>
+@if(ViewData["cat"] != null)
+{
+    <h2>Categoría: @ViewData["cat"].ToString()</h2>
+}
+<body style="background-color:#5cb85c">
+    <div class="container border border-dark" style="padding:10px; width:100%;float:left;background-color: #a1cb58;">
+        <form asp-controller="Peliculas" asp-action="explorar">
+            <div class="row flex-nowrap">
+                <div class="col-md-4 my-auto">
+                    <div class="input-group flex-nowrap">
+                        <p class="my-auto text-black-50" style="padding:5px;"><b>Nombre de la pelicula </b></p>
+                        <input type="text" style="padding:5px;" name="searchpel" class="form-control" placeholder="search" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group flex-nowrap">
+                        <input type="submit" class="btn btn-success" value="Filtrar" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" style="padding:10px">
+        <div class="column" style="padding-right: 20px; width: 85%">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="row" style="background-color: #a1cb58;">
+                    @for (int j = 0; j < 3; j++)
+                    {
+                        if (i >= Model.Count) break;
+                        <div class="col-sm-4 border border-dark d-flex align-items-center flex-column" style="padding: 12px;">
+                            <div class="mb-auto p-2">
+                                @if (Model.ElementAt(i).Portada.Equals("portada_no_disponible.jpg"))
+                                {
+                                    <img src="~/Images/portada_no_disponible.jpg" alt="No disponible" style="max-width:200px; max-height: 400px;" />
+                                }
+                                else
+                                {
+                                    string path = Url.Content("~/Images/" + Model.ElementAt(i).Portada);
+                                    <img src="@path" style="max-width:200px; max-height: 400px;" />
+                                }
+                            </div>
+                            <div class="p-2">
+                                <a class="btn btn-success" asp-action="ExplorerDetails" asp-route-id="@Model.ElementAt(i).Id">Ver @Model.ElementAt(i).Titulo</a>
+                            </div>
+                            
+                        </div>
+                        i++;
+                    }
+                </div>
+                i--;
+            }
+        </div>
+        <div class="column text-white border border-dark" style="padding-right: 20px; background-color: #a1cb58; width: 15%; height: 500px;">
+            <p class="text-center" style="text-align: center;"><b><i>CATEGORÍAS</i></b></p>
+            <div style="overflow-y: auto; overflow-wrap:break-word; height: 500px; width: 100%;margin: 0 auto; text-align: left">
+                <ul>
+                    @if (ViewBag.listacategorias != null)
+                    {
+                        <li>
+                            <a class="cate" asp-controller="Peliculas" asp-action="explorar"><u>Mostrar todas</u></a>
+                        </li>
+                        foreach (var item in ViewBag.listacategorias)
+                        {
+                            <li>
+                                <a class="cate" asp-controller="Peliculas" asp-action="explorar" asp-route-idcat="@item.Id"><u>@item.Nombre</u></a>
+                            </li>
+                        }
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <h3 class="text-center"><b>Has llegado al final de la lista</b></h3>
+</body>

@@ -69,6 +69,8 @@ namespace Proyecto_SW_II.Models
                             Contraseña = "SOY_ADMIN",
                             Estado = true,
                             Nombre = "ROOT",
+                            Email = "root@gmail.com",
+                            cuentaBancaria = "",
                             Miusuario = new Usuario
                             {
                                 Nombre = "ROOT",

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Proyecto_SW_II.Models.Compañia>
+
+@{
+    ViewData["Title"] = "SelectCompany";
+}
+
+<h1>Seleccionar una compañia para la pelicula</h1>
+<br />
+<div class="container" style="width:50%;background-color:InfoBackground;float:left;">
+    <form asp-controller="Peliculas" asp-action="selectCompañia">
+        <div class="row flex-nowrap">
+            <div class="col-md-6 my-auto">
+                <div class="input-group flex-nowrap">
+                    <input type="text" name="searchString" class="form-control" placeholder="Search" />
+                    <input type="submit" class="btn btn-info" value="Filtrar" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    <a class="btn btn-outline-info" asp-action="Create" asp-route-id="@item.Id">Seleccionar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a class="btn btn-outline-info" asp-action="Create">Atrás</a>
