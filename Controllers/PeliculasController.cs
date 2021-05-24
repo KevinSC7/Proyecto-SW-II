@@ -273,6 +273,11 @@ namespace Proyecto_SW_II.Controllers
             {
                 _context.Alquileres.Remove(item);
             }
+            var r = await _context.RelacionesCategoriaPelicula.Where(p => p.pelicula.Id == id).ToListAsync();
+            foreach (var item in r)
+            {
+                _context.RelacionesCategoriaPelicula.Remove(item);
+            }
             var pelicula = await _context.Peliculas.FindAsync(id);
             _context.Peliculas.Remove(pelicula);
             await _context.SaveChangesAsync();
